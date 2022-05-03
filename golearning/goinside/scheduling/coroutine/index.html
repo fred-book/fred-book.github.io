@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summery">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下篇.浅出Go语言</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h4 id="协程">协程</h4>
+<hr>
+<h5 id="协程的意义">协程的意义</h5>
+<p>一般来说，线程的进程的最小执行单元，被操作系统统一调度。为了提升进程的并发处理能力，可以采用多线程的方式。但是随着线程数量的增加，线程本身带来的开销变得不可忽视，特别是在大规模并发系统下线程频繁切换场景。线程的开销大体现在如下两点：</p>
+<ul>
+<li>创建和切换开销大：线程的创建和切换需要进入内核，而进入内核所消耗的性能代价比较高</li>
+<li>内存开销大：内核在创建线程时默认为其分配一个比较大的栈空间（一般为2 M），并且栈空间一旦创建和初始化后，其大小就不能再变化，所以在某些场景下会出现栈溢出故障。</li>
+</ul>
+<p>为了解决以上线程的弊端，同时满足大规模并发的要求，协程（coroutine）的概念应运而生，相比于线程，协程则轻量得多：</p>
+<ul>
+<li>协程是用户态，其创建和切换都在用户代码中完成，而无需进入内核态，其开销远小于线程的创建和切换。</li>
+<li>协程栈空间默认为2 K，在大多数情况下已经够用。即使不够，Go协程也能自动进行扩栈，同时如果多余的栈空间不再使用，还会自动缩栈。这样既提升了内存利用率，同时也避免了栈溢出风险。</li>
+</ul>
+<h5 id="协程的原理">协程的原理</h5>
+<p>协程（Goroutine）依靠线程调度，而这些线程则称为协程调度器。在一个进程中会同时存在多个协程，而调度线程也有多个，协程和线程形成多对多（M : N）的关系模型。每个调度线程都是在周而复始的调度协程，其工作过程可以用以下伪代码来简单概括：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程执行函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123; <span class="comment">//循环调度</span></span><br><span class="line">        g := find_runable_goroutine_from_m_goroutines() <span class="comment">//根据某种算法找出一个可用的goroutine</span></span><br><span class="line">        run_g(g) <span class="comment">//运行该goroutine, 直到调度其它goroutine才返回</span></span><br><span class="line">        save_status_of_g(g) <span class="comment">//保存goroutine状态</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每一个调度线程都负责调度一组协程，在每一个调度循环中，线程获取一个可运行的协程，并调度该协程。当协程调度完（调度时间片到达，长时间阻塞，协程退出等），则保存协程状态，并执行下一个调度过程。</p>
+<p>线程被CPU调度，相当于将CPU执行时间切分成若干时间片分配给不同的线程；协程被线程调度，则进一步切分线程的执行时间。不管是线程还是协程，都是一种逻辑概念，本质上是记录程序运行上下文的一种结构体，通过一种调度机制，被挂载到CPU上执行，并在执行过程中更新上下文。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-03</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>

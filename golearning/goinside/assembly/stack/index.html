@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summery">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下篇.浅出Go语言</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h4 id="调用栈">调用栈</h4>
+<hr>
+<p>在程序运行的过程中，会涉及函数的调用，函数返回后继续执行本函数剩下的代码。程序是如何组织这一调用过程的呢，就是靠栈。</p>
+<h5 id="栈">栈</h5>
+<p>栈是程序执行单元（线程或者协程）在执行过程中记录程序上下文的数据结构，用于保存函数调用过程中的各种数据（包含本地变量，参数，返回值等）。每一个程序执行单元都有一个独立的栈，伴随其整个生命周期，这样保证了每个执行单元能够并行执行。</p>
+<p>栈由栈帧组成，每一个调用函数对应一个栈帧。栈空间从高地址向低地址生长，栈底指向栈起始地址（高地址），栈顶执行栈终止地址（低地址）</p>
+<p><img src="/assets/images/golearing/image-20220501155623356.png" alt="image-20220501155623356"></p>
+<p>当调用函数时，则从当前栈顶往下扩一个栈帧；当从函数执行完返回，则往上缩一个栈帧。</p>
+<h5 id="栈帧">栈帧</h5>
+<p>每个函数在栈中对应的片段叫做栈帧，也就是stack frame。栈帧记录了函数调用需要的上下文信息。在1.18版本，Go的栈帧如下：</p>
+<p><img src="/assets/images/golearing/image-20220501220333663.png" alt="image-20220501220333663"></p>
+<p>栈帧有以下5部分组成：</p>
+<p>Caller BP：保存调用函数的栈基地址（BP），用于函数返回后获得调用函数的栈帧基地址。</p>
+<p>Local Var：保存函数内部本地变量。</p>
+<p>temporarily unused space：保存在函数运行过程中产生的临时变量。</p>
+<p>Return Temp Var：保存函数返回值临时变量。</p>
+<p>Callee Arg：保存被调用函数的返回值。</p>
+<p>Return Address：保存被调用函数返回后的程序地址，即本函数调用被调用函数的下一条指令地址。</p>
+<p>注意：Return Address实际并不是在创建函数栈的时候生成，而是在调用Call函数时生成，函数RET时释放。</p>
+<p>栈帧的创建和释放过程如下伪汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TEXT funcb, , $framesize-argumentsize</span><br><span class="line">    SUBQ $framesize, SP //将SP减去栈帧大小，即开辟栈帧</span><br><span class="line">    MOVQ BP, $framesize-8(SP)//将调用函数的BP地址保存到Caller BP栈地址上</span><br><span class="line">    LEAQ $framesize-8(SP), BP//将当前栈基地址SP+framesize-8存入BP寄存器</span><br><span class="line">    ...</span><br><span class="line">    CALL .funca //调用函数funca，将SP减去8，并向栈中压入下一条指令地址即Return Address</span><br><span class="line">    ...</span><br><span class="line">    MOVQ $framesize-8(SP), BP//将SP+framesize-8保存的Caller BP存入BP寄存器</span><br><span class="line">    ADDQ $framesize, SP //将SP加栈帧大小，即释放栈帧</span><br><span class="line">    RET//返回函数，将栈顶保存的返回地址弹出到IP寄存器，并将SP加8，释放Return Address</span><br></pre></td></tr></table></figure>
+<p>每个函数都遵循以上的栈处理过程，其中省略部分为函数体执行过程中，其中涉及栈空间存取过程。</p>
+<h5 id="代码分析-v2">代码分析</h5>
+<p>下面以一个简单的函数调用关系来说明栈空间的处理过程，源代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> math</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:nosplit</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:nosplit</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	c := add(a, b)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过编译生成汇编代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br><span class="line">	SUBQ    $16, SP</span><br><span class="line">	MOVQ    BP, 8(SP)</span><br><span class="line">	LEAQ    8(SP), BP</span><br><span class="line">	FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	FUNCDATA        $5, &quot;&quot;.add.arginfo1(SB)</span><br><span class="line">	PCDATA  $0, $-2</span><br><span class="line">	MOVQ    AX, &quot;&quot;.a+24(SP)</span><br><span class="line">	MOVQ    BX, &quot;&quot;.b+32(SP)</span><br><span class="line">	MOVQ    $0, &quot;&quot;.~r0(SP)</span><br><span class="line">	MOVQ    &quot;&quot;.a+24(SP), AX</span><br><span class="line">	ADDQ    &quot;&quot;.b+32(SP), AX</span><br><span class="line">	MOVQ    AX, &quot;&quot;.~r0(SP)</span><br><span class="line">	MOVQ    8(SP), BP</span><br><span class="line">	ADDQ    $16, SP</span><br><span class="line">	RET</span><br><span class="line"></span><br><span class="line">TEXT    &quot;&quot;.calc(SB), NOSPLIT|ABIInternal, $40-16</span><br><span class="line">	SUBQ    $40, SP</span><br><span class="line">	MOVQ    BP, 32(SP)</span><br><span class="line">	LEAQ    32(SP), BP</span><br><span class="line">	FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">	FUNCDATA        $5, &quot;&quot;.calc.arginfo1(SB)</span><br><span class="line">	PCDATA  $0, $-2</span><br><span class="line">	MOVQ    AX, &quot;&quot;.a+48(SP)</span><br><span class="line">	MOVQ    BX, &quot;&quot;.b+56(SP)</span><br><span class="line">	MOVQ    $0, &quot;&quot;.~r0+16(SP)</span><br><span class="line">	MOVQ    &quot;&quot;.b+56(SP), BX</span><br><span class="line">	MOVQ    &quot;&quot;.a+48(SP), AX</span><br><span class="line">	PCDATA  $1, $0</span><br><span class="line">	CALL    &quot;&quot;.add(SB)</span><br><span class="line">	MOVQ    AX, &quot;&quot;.c+24(SP)</span><br><span class="line">	MOVQ    AX, &quot;&quot;.~r0+16(SP)</span><br><span class="line">	MOVQ    32(SP), BP</span><br><span class="line">	ADDQ    $40, SP</span><br><span class="line">	RET</span><br></pre></td></tr></table></figure>
+<p>相信在学习了前面知识的基础上，大家基本上能看懂上述代码的意思。下面仅对栈空间的处理过程进行描述。</p>
+<ol>
+<li>
+<p>开辟calc函数栈空间，栈帧长度为40字节；将BP保存到Caller BP栈地址上，并将BP寄存器设置成当前栈帧BP地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SUBQ    $40, SP</span><br><span class="line">MOVQ    BP, 32(SP)</span><br><span class="line">LEAQ    32(SP), BP</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501210656748.png" alt="image-20220501210656748"></p>
+</li>
+<li>
+<p>将参数保存到调用函数的Callee Arg栈地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    AX, &quot;&quot;.a+48(SP)</span><br><span class="line">MOVQ    BX, &quot;&quot;.b+56(SP)</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501211002563.png" alt="image-20220501211002563"></p>
+</li>
+<li>
+<p>将返回值Callee Ret栈地址上的值清零，并将入参分别赋值给AX，BX寄存器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    $0, &quot;&quot;.~r0+16(SP)</span><br><span class="line">MOVQ    &quot;&quot;.b+56(SP), BX</span><br><span class="line">MOVQ    &quot;&quot;.a+48(SP), AX</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501211535383.png" alt="image-20220501211535383"></p>
+</li>
+<li>
+<p>调用函数add，将<code>CALL    &quot;&quot;.add(SB)</code>的下一条指令地址压入栈中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL    &quot;&quot;.add(SB)</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501211920086.png" alt="image-20220501211920086"></p>
+</li>
+<li>
+<p>执行add函数，开辟add函数栈帧，大小为16字节；同样保存Caller BP和更新BP寄存器指向地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SUBQ    $16, SP</span><br><span class="line">MOVQ    BP, 8(SP)</span><br><span class="line">LEAQ    8(SP), BP</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501212436303.png" alt="image-20220501212436303"></p>
+</li>
+<li>
+<p>将参数保存到调用函数的Callee Arg栈地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    AX, &quot;&quot;.a+24(SP)</span><br><span class="line">MOVQ    BX, &quot;&quot;.b+32(SP)</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501212819453.png" alt="image-20220501212819453"></p>
+</li>
+<li>
+<p>将返回值栈地址的值清零；并将参数相加，并将结果保存到AX寄存器；将计算结果存入Callee Ret栈地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    $0, &quot;&quot;.~r0(SP)</span><br><span class="line">MOVQ    &quot;&quot;.a+24(SP), AX</span><br><span class="line">ADDQ    &quot;&quot;.b+32(SP), AX</span><br><span class="line">MOVQ    AX, &quot;&quot;.~r0(SP)</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501214302219.png" alt="image-20220501214302219"></p>
+</li>
+<li>
+<p>将calc’s BP保存到BP，并释放add函数栈帧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    8(SP), BP</span><br><span class="line">ADDQ    $16, SP</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501213539086.png" alt="image-20220501213539086"></p>
+</li>
+<li>
+<p>add函数执行完返回，将当前栈顶保存的返回地址存入IP寄存器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RET</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501213737186.png" alt="image-20220501213737186"></p>
+</li>
+<li>
+<p>add执行完返回后继续执行。将add函数执行结果分别保存到本地变量c和返回值栈地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    AX, &quot;&quot;.c+24(SP)</span><br><span class="line">MOVQ    AX, &quot;&quot;.~r0+16(SP)</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501214057420.png" alt="image-20220501214057420"></p>
+</li>
+<li>
+<p>将调用calc的函数栈帧的BP保存到BP寄存器，并释放calc栈帧。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOVQ    32(SP), BP</span><br><span class="line">ADDQ    $40, SP</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501214715398.png" alt="image-20220501214715398"></p>
+</li>
+<li>
+<p>calc函数行完返回，将当前栈顶保存的返回地址存入IP寄存器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RET</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220501214843593.png" alt="image-20220501214843593"></p>
+</li>
+</ol>
+<p>上述详细描述了函数调用过程中，函数栈帧的变化。但其中还有如下疑问：</p>
+<blockquote>
+<p>问题1. 栈帧大小计算规则？</p>
+<p>问题2. 参数栈地址和返回值栈地址上的值赋值规则？</p>
+<p>问题3. 超多入参或者超多返回值的处理规则？</p>
+</blockquote>
+<p>这些将在后面的章节中讲到。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-03</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>

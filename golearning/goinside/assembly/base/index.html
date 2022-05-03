@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summery">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下篇.浅出Go语言</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h4 id="基础知识">基础知识</h4>
+<hr>
+<p>先来看一段代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>go tool compile -N -L -S math.go</code>生成汇编代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br><span class="line">0x0000 00000 (math.go:4)        SUBQ    $16, SP</span><br><span class="line">0x0004 00004 (math.go:4)        MOVQ    BP, 8(SP)</span><br><span class="line">0x0009 00009 (math.go:4)        LEAQ    8(SP), BP</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $5, &quot;&quot;.add.arginfo1(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        PCDATA  $0, $-2</span><br><span class="line">0x000e 00014 (math.go:4)        MOVQ    AX, &quot;&quot;.a+24(SP)</span><br><span class="line">0x0013 00019 (math.go:4)        MOVQ    BX, &quot;&quot;.b+32(SP)</span><br><span class="line">0x0018 00024 (math.go:4)        MOVQ    $0, &quot;&quot;.~r0(SP)</span><br><span class="line">0x0020 00032 (math.go:5)        MOVQ    &quot;&quot;.a+24(SP), AX</span><br><span class="line">0x0025 00037 (math.go:5)        ADDQ    &quot;&quot;.b+32(SP), AX</span><br><span class="line">0x002a 00042 (math.go:5)        MOVQ    AX, &quot;&quot;.~r0(SP)</span><br><span class="line">0x002e 00046 (math.go:5)        MOVQ    8(SP), BP</span><br><span class="line">0x0033 00051 (math.go:5)        ADDQ    $16, SP</span><br><span class="line">0x0037 00055 (math.go:5)        RET</span><br></pre></td></tr></table></figure>
+<p>从上面的代码可以看出，汇编代码由指令，寄存器，常量以及一些关键字组成。</p>
+<h5 id="指令">指令</h5>
+<p>指令也称为机器码，是CPU的最小执行单元。指令是由CPU类型决定的，比如x86架构CPU支持的指令集和ARM架构的不一样，64位CPU和32位CPU也不一样。而汇编语言只是为指令起了一个别名，最终会转换成CPU支持的指令。Plan 9共有几百个指令（详见Plan 9指令集），其中常用的指令有如下几类：</p>
+<p><strong>移动类指令</strong></p>
+<p>移动类指令一般是将常量，栈地址，寄存器中保存的值赋值给寄存器或者栈地址，指令形式一般是<code>MOVX SRC, DST</code>，其中MOVX中的X表示数据类型，SRC表示源数据，DST表示目的寄存器或者栈地址。如下表列出常用的几个移动类指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215832785.png" alt="image-20220430215832785"></p>
+<p><strong>计算类指令</strong></p>
+<p>计算类指令包含了整型加减乘除，位移，位运算，地址运算等运算功能。如下表列出常用的几个计算类指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215844880.png" alt="image-20220430215844880"></p>
+<p><strong>比较类指令</strong></p>
+<p>比较类运算用来比较两个整型是否相等。如下表列出常用的几个比较类指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215857613.png" alt="image-20220430215857613"></p>
+<p><strong>跳转类指令</strong></p>
+<p>跳转指令包含无条件跳转和有条件跳转两类，表示在无条件或者条件成立下PC跳转到另外一个地址。如下表列出常用的几个跳转类指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215905429.png" alt="image-20220430215905429"></p>
+<p><strong>操作类指令</strong></p>
+<p>操作类指令是指各种基础操作功能的指令。如下表列出常用的几个操作类指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215913780.png" alt="image-20220430215913780"></p>
+<p><strong>调用类指令</strong></p>
+<p>调用类指令是指汇编中调用其它函数过程中使用的指令，包括CALL和RET两个，如下表所示：</p>
+<p><img src="/assets/images/golearing/image-20220430215921491.png" alt="image-20220430215921491"></p>
+<p><strong>伪指令</strong></p>
+<p>同时，为了配合运行时优化，Plan 9定了一些伪指令。如下表列出常用的几个伪指令：</p>
+<p><img src="/assets/images/golearing/image-20220430215928151.png" alt="image-20220430215928151"></p>
+<h5 id="寄存器">寄存器</h5>
+<p>寄存器是CPU片上存储单元，空间极小但访问速率极高，用来辅助完成指令操作。x86-64系统有18个通用寄存器，它们的作用及在Plan 9中的名称如下表所示：</p>
+<p><img src="/assets/images/golearing/image-20220430222019084.png" alt="image-20220430222019084"></p>
+<p>另外为了编程便利，Plan 9引入如下4个伪寄存器：</p>
+<p>FP: Frame Pointer: arguments</p>
+<blockquote>
+<p>指向函数的入参起始位子，使用形式为<code>symbol+offset(FP)</code>，如函数的第1个参数表示为<code>arg1+0(FP)</code>，第2个参数为<code>arg2+8(FP)</code>等。其中symbol是必须有的，在汇编角度来看，无实际意义仅仅为了提升代码可读性。</p>
+<p>FP指向的地址并不在本栈帧内，而是指向调用本函数的调用函数的栈帧中。</p>
+</blockquote>
+<p>PC: Program Counter: jumps and branches</p>
+<blockquote>
+<p>在x86-64系统上，PC实际是IP寄存器，指向当前执行的指令地址。</p>
+</blockquote>
+<p>SB: Static Base Pointer: global symbols</p>
+<blockquote>
+<p>全局静态基指针，一般用来声明函数和全局变量。</p>
+</blockquote>
+<p>SP: Stack Pointer: locals</p>
+<blockquote>
+<p>指向当前栈帧的局部变量的起始位置，使用形式为<code>symbol+offset(SP)</code>，如第1个本地变量表示为<code>localvar1-8(SP)</code>，第2个变量为<code>localvar2-16(SP)</code>（注：假设变量长度为8字节）。</p>
+<p>该寄存器与硬件SP（栈顶）指向的地址不一样。如果在手写代码中使用硬件寄存器SP，则需要写成<code>offset(SP)</code>形式。</p>
+<p><strong>特别注意：对于编译（如go tool compile -S或者go tool objdump）输出的汇编代码，其中的SP均表示硬件寄存器SP，不论代码中是否制定symbol。</strong></p>
+</blockquote>
+<h5 id="关键字">关键字</h5>
+<p><strong>声明变量（DATA，GLOBL）</strong></p>
+<p>汇编中的变量，一般是指保存在.rodata和.data段中的只读值，对应于代码，则是已经初始化过的全局的const，var，static变量。</p>
+<p>使用格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DATA symbol+offset(SB)/width, value</span><br><span class="line">GLOBL symbol(SB), flag, $width</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<p>offset：为相对symbol地址的偏移</p>
+<p>flag：为常量类型，其取值如下：</p>
+<blockquote>
+<ul>
+<li><code>NOPROF</code> = 1<br>
+(For <code>TEXT</code> items.) Don’t profile the marked function. This flag is deprecated.</li>
+<li><code>DUPOK</code> = 2<br>
+It is legal to have multiple instances of this symbol in a single binary. The linker will choose one of the duplicates to use.</li>
+<li><code>NOSPLIT</code> = 4<br>
+(For <code>TEXT</code> items.) Don’t insert the preamble to check if the stack must be split. The frame for the routine, plus anything it calls, must fit in the spare space remaining in the current stack segment. Used to protect routines such as the stack splitting code itself.</li>
+<li><code>RODATA</code> = 8<br>
+(For <code>DATA</code> and <code>GLOBL</code> items.) Put this data in a read-only section.</li>
+<li><code>NOPTR</code> = 16<br>
+(For <code>DATA</code> and <code>GLOBL</code> items.) This data contains no pointers and therefore does not need to be scanned by the garbage collector.</li>
+<li><code>WRAPPER</code> = 32<br>
+(For <code>TEXT</code> items.) This is a wrapper function and should not count as disabling <code>recover</code>.</li>
+<li><code>NEEDCTXT</code> = 64<br>
+(For <code>TEXT</code> items.) This function is a closure so it uses its incoming context register.</li>
+<li><code>LOCAL</code> = 128<br>
+This symbol is local to the dynamic shared object.</li>
+<li><code>TLSBSS</code> = 256<br>
+(For <code>DATA</code> and <code>GLOBL</code> items.) Put this data in thread local storage.</li>
+<li><code>NOFRAME</code> = 512<br>
+(For <code>TEXT</code> items.) Do not insert instructions to allocate a stack frame and save/restore the return address, even if this is not a leaf function. Only valid on functions that declare a frame size of 0.</li>
+<li><code>TOPFRAME</code> = 2048<br>
+(For <code>TEXT</code> items.) Function is the outermost frame of the call stack. Traceback should stop at this function.</li>
+</ul>
+</blockquote>
+<p>例如声明一个pi常量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DATA pi+0(SB)/8 3.1415926</span><br><span class="line">GLOBL pi(SB), RODATA, $8</span><br></pre></td></tr></table></figure>
+<p>例如声明一个字符串常量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DATA apple+0(SB)/8 &quot;this is &quot;</span><br><span class="line">DATA apple+8(SB)/8 &quot;an apple&quot;</span><br><span class="line">GLOBL apple(SB), RODATA, $16</span><br></pre></td></tr></table></figure>
+<p><strong>声明函数（TEXT）</strong></p>
+<p>使用TEXT声明函数，主要是因为函数存储在TEXT段中，格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                                     栈帧大小（局部变量+可能需要的额外调用函数的参数空间的总大小）</span><br><span class="line">                                        |</span><br><span class="line">TEXT pkgname·funcname(SB), flags, $framesize-argumentsize</span><br><span class="line">        |        |                                |</span><br><span class="line">       包名      函数名                            参数和返回值总大小</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<p>pkgname为包名，可以省略，为了代码可读性，建议写上。</p>
+<p>funcname为函数名，与包名之间用Unicode的中点连接。</p>
+<p>framesize为栈帧大小</p>
+<p>argumentssize为入参元素总大小</p>
+<h5 id="代码分析">代码分析</h5>
+<p>在学习完上述基础知识后，再回到节首的汇编代码就比较容易理解了。这里只解释字面意思，其中原理在下一节介绍。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br></pre></td></tr></table></figure>
+<p>声明函数add，其中pkgname用“”代替，在链接时将替换成math包名。函数栈帧大小为16字节，参数大小为16字节（2个int大小）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        SUBQ    $16, SP</span><br><span class="line">0x0004 00004 (math.go:4)        MOVQ    BP, 8(SP)</span><br><span class="line">0x0009 00009 (math.go:4)        LEAQ    8(SP), BP</span><br></pre></td></tr></table></figure>
+<p>开辟16字节的栈空间，将当前BP寄存器地址存入SP+8地址上，并将当前SP+8地址保存到BP寄存器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $5, &quot;&quot;.add.arginfo1(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        PCDATA  $0, $-2</span><br></pre></td></tr></table></figure>
+<p>伪指令不做过多解释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x000e 00014 (math.go:4)        MOVQ    AX, &quot;&quot;.a+24(SP)</span><br><span class="line">0x0013 00019 (math.go:4)        MOVQ    BX, &quot;&quot;.b+32(SP)</span><br><span class="line">0x0018 00024 (math.go:4)        MOVQ    $0, &quot;&quot;.~r0(SP)</span><br></pre></td></tr></table></figure>
+<p>将AX保存的值存入SP+24地址上，将BX保存的值存入SP+32地址上，将0存入SP地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x0020 00032 (math.go:5)        MOVQ    &quot;&quot;.a+24(SP), AX</span><br><span class="line">0x0025 00037 (math.go:5)        ADDQ    &quot;&quot;.b+32(SP), AX</span><br><span class="line">0x002a 00042 (math.go:5)        MOVQ    AX, &quot;&quot;.~r0(SP)</span><br></pre></td></tr></table></figure>
+<p>将SP+24地址上的值赋值给AX，将AX的值与SP+32地址上的值相加并保存到AX，将AX的值存入SP地址上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0x002e 00046 (math.go:5)        MOVQ    8(SP), BP</span><br><span class="line">0x0033 00051 (math.go:5)        ADDQ    $16, SP</span><br></pre></td></tr></table></figure>
+<p>将SP+8地址上的值存入BP寄存器，将SP加上16。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0037 00055 (math.go:5)        RET</span><br></pre></td></tr></table></figure>
+<p>函数返回。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-03</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
