@@ -14,5 +14,6 @@
   * 第二章 调度模型
     * [2.1 概述](/golearning/goinside/scheduling/abstract)
     * [2.2 协程](/golearning/goinside/scheduling/coroutine)
+    * [2.3 调度模型](/golearning/goinside/scheduling/moudle)
 * 下篇.浅出Go语言
 
