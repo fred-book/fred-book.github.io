@@ -145,9 +145,9 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h4 id="协程">协程</h4>
+  <h3 id="协程">协程</h3>
 <hr>
-<h5 id="协程的意义">协程的意义</h5>
+<h4 id="协程的意义">协程的意义</h4>
 <p>一般来说，线程的进程的最小执行单元，被操作系统统一调度。为了提升进程的并发处理能力，可以采用多线程的方式。但是随着线程数量的增加，线程本身带来的开销变得不可忽视，特别是在大规模并发系统下线程频繁切换场景。线程的开销大体现在如下两点：</p>
 <ul>
 <li>创建和切换开销大：线程的创建和切换需要进入内核，而进入内核所消耗的性能代价比较高</li>
@@ -158,7 +158,7 @@ function sidebar_toggle() {
 <li>协程是用户态，其创建和切换都在用户代码中完成，而无需进入内核态，其开销远小于线程的创建和切换。</li>
 <li>协程栈空间默认为2 K，在大多数情况下已经够用。即使不够，Go协程也能自动进行扩栈，同时如果多余的栈空间不再使用，还会自动缩栈。这样既提升了内存利用率，同时也避免了栈溢出风险。</li>
 </ul>
-<h5 id="协程的原理">协程的原理</h5>
+<h4 id="协程的原理">协程的原理</h4>
 <p>协程（Goroutine）依靠线程调度，而这些线程则称为协程调度器。在一个进程中会同时存在多个协程，而调度线程也有多个，协程和线程形成多对多（M : N）的关系模型。每个调度线程都是在周而复始的调度协程，其工作过程可以用以下伪代码来简单概括：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程执行函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">schedule</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123; <span class="comment">//循环调度</span></span><br><span class="line">        g := find_runable_goroutine_from_m_goroutines() <span class="comment">//根据某种算法找出一个可用的goroutine</span></span><br><span class="line">        run_g(g) <span class="comment">//运行该goroutine, 直到调度其它goroutine才返回</span></span><br><span class="line">        save_status_of_g(g) <span class="comment">//保存goroutine状态</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>每一个调度线程都负责调度一组协程，在每一个调度循环中，线程获取一个可运行的协程，并调度该协程。当协程调度完（调度时间片到达，长时间阻塞，协程退出等），则保存协程状态，并执行下一个调度过程。</p>

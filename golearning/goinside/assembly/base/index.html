@@ -145,14 +145,14 @@ function sidebar_toggle() {
         </div>
         <div class="book-content">
           <div class="book-post">
-  <h4 id="基础知识">基础知识</h4>
+  <h3 id="基础知识">基础知识</h3>
 <hr>
 <p>先来看一段代码</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用<code>go tool compile -N -L -S math.go</code>生成汇编代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br><span class="line">0x0000 00000 (math.go:4)        SUBQ    $16, SP</span><br><span class="line">0x0004 00004 (math.go:4)        MOVQ    BP, 8(SP)</span><br><span class="line">0x0009 00009 (math.go:4)        LEAQ    8(SP), BP</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        FUNCDATA        $5, &quot;&quot;.add.arginfo1(SB)</span><br><span class="line">0x000e 00014 (math.go:4)        PCDATA  $0, $-2</span><br><span class="line">0x000e 00014 (math.go:4)        MOVQ    AX, &quot;&quot;.a+24(SP)</span><br><span class="line">0x0013 00019 (math.go:4)        MOVQ    BX, &quot;&quot;.b+32(SP)</span><br><span class="line">0x0018 00024 (math.go:4)        MOVQ    $0, &quot;&quot;.~r0(SP)</span><br><span class="line">0x0020 00032 (math.go:5)        MOVQ    &quot;&quot;.a+24(SP), AX</span><br><span class="line">0x0025 00037 (math.go:5)        ADDQ    &quot;&quot;.b+32(SP), AX</span><br><span class="line">0x002a 00042 (math.go:5)        MOVQ    AX, &quot;&quot;.~r0(SP)</span><br><span class="line">0x002e 00046 (math.go:5)        MOVQ    8(SP), BP</span><br><span class="line">0x0033 00051 (math.go:5)        ADDQ    $16, SP</span><br><span class="line">0x0037 00055 (math.go:5)        RET</span><br></pre></td></tr></table></figure>
 <p>从上面的代码可以看出，汇编代码由指令，寄存器，常量以及一些关键字组成。</p>
-<h5 id="指令">指令</h5>
+<h4 id="指令">指令</h4>
 <p>指令也称为机器码，是CPU的最小执行单元。指令是由CPU类型决定的，比如x86架构CPU支持的指令集和ARM架构的不一样，64位CPU和32位CPU也不一样。而汇编语言只是为指令起了一个别名，最终会转换成CPU支持的指令。Plan 9共有几百个指令（详见Plan 9指令集），其中常用的指令有如下几类：</p>
 <p><strong>移动类指令</strong></p>
 <p>移动类指令一般是将常量，栈地址，寄存器中保存的值赋值给寄存器或者栈地址，指令形式一般是<code>MOVX SRC, DST</code>，其中MOVX中的X表示数据类型，SRC表示源数据，DST表示目的寄存器或者栈地址。如下表列出常用的几个移动类指令：</p>
@@ -175,7 +175,7 @@ function sidebar_toggle() {
 <p><strong>伪指令</strong></p>
 <p>同时，为了配合运行时优化，Plan 9定了一些伪指令。如下表列出常用的几个伪指令：</p>
 <p><img src="/assets/images/golearing/image-20220430215928151.png" alt="image-20220430215928151"></p>
-<h5 id="寄存器">寄存器</h5>
+<h4 id="寄存器">寄存器</h4>
 <p>寄存器是CPU片上存储单元，空间极小但访问速率极高，用来辅助完成指令操作。x86-64系统有18个通用寄存器，它们的作用及在Plan 9中的名称如下表所示：</p>
 <p><img src="/assets/images/golearing/image-20220430222019084.png" alt="image-20220430222019084"></p>
 <p>另外为了编程便利，Plan 9引入如下4个伪寄存器：</p>
@@ -198,7 +198,7 @@ function sidebar_toggle() {
 <p>该寄存器与硬件SP（栈顶）指向的地址不一样。如果在手写代码中使用硬件寄存器SP，则需要写成<code>offset(SP)</code>形式。</p>
 <p><strong>特别注意：对于编译（如go tool compile -S或者go tool objdump）输出的汇编代码，其中的SP均表示硬件寄存器SP，不论代码中是否制定symbol。</strong></p>
 </blockquote>
-<h5 id="关键字">关键字</h5>
+<h4 id="关键字">关键字</h4>
 <p><strong>声明变量（DATA，GLOBL）</strong></p>
 <p>汇编中的变量，一般是指保存在.rodata和.data段中的只读值，对应于代码，则是已经初始化过的全局的const，var，static变量。</p>
 <p>使用格式如下：</p>
@@ -244,7 +244,7 @@ This symbol is local to the dynamic shared object.</li>
 <p>funcname为函数名，与包名之间用Unicode的中点连接。</p>
 <p>framesize为栈帧大小</p>
 <p>argumentssize为入参元素总大小</p>
-<h5 id="代码分析">代码分析</h5>
+<h4 id="代码分析">代码分析</h4>
 <p>在学习完上述基础知识后，再回到节首的汇编代码就比较容易理解了。这里只解释字面意思，其中原理在下一节介绍。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br></pre></td></tr></table></figure>
 <p>声明函数add，其中pkgname用“”代替，在链接时将替换成math包名。函数栈帧大小为16字节，参数大小为16字节（2个int大小）</p>
