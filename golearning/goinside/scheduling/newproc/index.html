@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summery">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下篇.浅出Go语言</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="创建协程-v2">创建协程</h3>
+<hr>
+<p>在汇编代码里，使用<code>call newproc</code>创建协程；在go代码中，使用<code>go</code>关键字创建协程，实际<code>go</code>的汇编代码也是<code>call newproc</code>。</p>
+<p>newproc代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newproc</span><span class="params">(fn *funcval)</span></span> &#123;</span><br><span class="line">   gp := getg()</span><br><span class="line">   pc := getcallerpc()</span><br><span class="line">   systemstack(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      newg := newproc1(fn, gp, pc)</span><br><span class="line"></span><br><span class="line">      _p_ := getg().m.p.ptr()</span><br><span class="line">      runqput(_p_, newg, <span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> mainStarted &#123;</span><br><span class="line">         wakep()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中，可以看出创建协程分为下面三个阶段：</p>
+<ol>
+<li>创建g对象</li>
+<li>存入可运行队列</li>
+<li>唤醒p对象</li>
+</ol>
+<h4 id="创建g对象">创建g对象</h4>
+<p>创建g对象的代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入参fn：为协程的入口函数</span></span><br><span class="line"><span class="comment">//入参callergp：调用newproc函数的g</span></span><br><span class="line"><span class="comment">//入参callerpc：调用newproc的函数中go/call newproc语句的指令地址</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newproc1</span><span class="params">(fn *funcval, callergp *g, callerpc <span class="type">uintptr</span>)</span></span> *g &#123;</span><br><span class="line">   _g_ := getg()<span class="comment">//因为newproc1是通过systemstack调用的，所以getg获取的是当前g所属的g0（后续详细介绍系统调用）</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> fn == <span class="literal">nil</span> &#123;</span><br><span class="line">      _g_.m.throwing = <span class="number">-1</span> <span class="comment">// do not dump full stacks</span></span><br><span class="line">      throw(<span class="string">&quot;go of nil func value&quot;</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   acquirem() <span class="comment">// disable preemption because it can be holding p in a local var</span></span><br><span class="line"></span><br><span class="line">   _p_ := _g_.m.p.ptr()<span class="comment">//获取当前m所绑定的p</span></span><br><span class="line">   newg := gfget(_p_)<span class="comment">//获取空闲状态的g对象，优先从p对象的gFree队列中取，如果p中gFree为空，则向sched对象的全局gFree中获取</span></span><br><span class="line">   <span class="keyword">if</span> newg == <span class="literal">nil</span> &#123;</span><br><span class="line">      newg = malg(_StackMin)<span class="comment">//如果没有空闲的g对象，则创建一个新的g对象，并创建最小栈空间大小的栈</span></span><br><span class="line">      casgstatus(newg, _Gidle, _Gdead)<span class="comment">//设置g对象状态为_Gdead，并存入allg切片中</span></span><br><span class="line">      allgadd(newg) <span class="comment">// publishes with a g-&gt;status of Gdead so GC scanner doesn&#x27;t look at uninitialized stack.</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> newg.stack.hi == <span class="number">0</span> &#123;</span><br><span class="line">      throw(<span class="string">&quot;newproc1: newg missing stack&quot;</span>)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> readgstatus(newg) != _Gdead &#123;</span><br><span class="line">      throw(<span class="string">&quot;newproc1: new g is not Gdead&quot;</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//初始化栈空间</span></span><br><span class="line">   totalSize := <span class="type">uintptr</span>(<span class="number">4</span>*goarch.PtrSize + sys.MinFrameSize) <span class="comment">// extra space in case of reads slightly beyond frame</span></span><br><span class="line">   totalSize = alignUp(totalSize, sys.StackAlign)</span><br><span class="line">   sp := newg.stack.hi - totalSize</span><br><span class="line">   spArg := sp</span><br><span class="line">   <span class="keyword">if</span> usesLR &#123;</span><br><span class="line">      <span class="comment">// caller&#x27;s LR</span></span><br><span class="line">      *(*<span class="type">uintptr</span>)(unsafe.Pointer(sp)) = <span class="number">0</span></span><br><span class="line">      prepGoExitFrame(sp)</span><br><span class="line">      spArg += sys.MinFrameSize</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//以下赋值newg.sched非常关键</span></span><br><span class="line">   memclrNoHeapPointers(unsafe.Pointer(&amp;newg.sched), unsafe.Sizeof(newg.sched))</span><br><span class="line">   newg.sched.sp = sp<span class="comment">//将当前栈顶地址保存</span></span><br><span class="line">   newg.stktopsp = sp<span class="comment">//将当前栈顶地址保存</span></span><br><span class="line">   <span class="comment">//设置pc值为goexit函数的地址+1</span></span><br><span class="line">   newg.sched.pc = abi.FuncPCABI0(goexit) + sys.PCQuantum <span class="comment">// +PCQuantum so that previous instruction is in same function</span></span><br><span class="line">   newg.sched.g = guintptr(unsafe.Pointer(newg))<span class="comment">//保存newg对象地址</span></span><br><span class="line">   gostartcallfn(&amp;newg.sched, fn)<span class="comment">//这行代码非常关键，其作用是模拟goexit函数入口调用了fn</span></span><br><span class="line">   newg.gopc = callerpc</span><br><span class="line">   newg.ancestors = saveAncestors(callergp)</span><br><span class="line">   newg.startpc = fn.fn</span><br><span class="line">   <span class="keyword">if</span> isSystemGoroutine(newg, <span class="literal">false</span>) &#123;</span><br><span class="line">      atomic.Xadd(&amp;sched.ngsys, +<span class="number">1</span>)</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// Only user goroutines inherit pprof labels.</span></span><br><span class="line">      <span class="keyword">if</span> _g_.m.curg != <span class="literal">nil</span> &#123;</span><br><span class="line">         newg.labels = _g_.m.curg.labels</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// Track initial transition?</span></span><br><span class="line">   newg.trackingSeq = <span class="type">uint8</span>(fastrand())</span><br><span class="line">   <span class="keyword">if</span> newg.trackingSeq%gTrackingPeriod == <span class="number">0</span> &#123;</span><br><span class="line">      newg.tracking = <span class="literal">true</span></span><br><span class="line">   &#125;</span><br><span class="line">   casgstatus(newg, _Gdead, _Grunnable)<span class="comment">//将g对象的状态设置成_Grunnable</span></span><br><span class="line">   gcController.addScannableStack(_p_, <span class="type">int64</span>(newg.stack.hi-newg.stack.lo))</span><br><span class="line">   <span class="comment">//分配goroutine id</span></span><br><span class="line">   <span class="keyword">if</span> _p_.goidcache == _p_.goidcacheend &#123;</span><br><span class="line">      <span class="comment">// Sched.goidgen is the last allocated id,</span></span><br><span class="line">      <span class="comment">// this batch must be [sched.goidgen+1, sched.goidgen+GoidCacheBatch].</span></span><br><span class="line">      <span class="comment">// At startup sched.goidgen=0, so main goroutine receives goid=1.</span></span><br><span class="line">      _p_.goidcache = atomic.Xadd64(&amp;sched.goidgen, _GoidCacheBatch)</span><br><span class="line">      _p_.goidcache -= _GoidCacheBatch - <span class="number">1</span></span><br><span class="line">      _p_.goidcacheend = _p_.goidcache + _GoidCacheBatch</span><br><span class="line">   &#125;</span><br><span class="line">   newg.goid = <span class="type">int64</span>(_p_.goidcache)</span><br><span class="line">   _p_.goidcache++</span><br><span class="line">   <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">      newg.racectx = racegostart(callerpc)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> trace.enabled &#123;</span><br><span class="line">      traceGoCreate(newg, newg.startpc)</span><br><span class="line">   &#125;</span><br><span class="line">   releasem(_g_.m)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> newg</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中最关键的是赋值newg.sched的那段代码，其作用主要是设置sched，模拟goexit调用协程函数fn，这个将在循环调度中起到至关重要的作用。</p>
+<p>在调用gostartcallfn函数前，新建协程的栈如下：</p>
+<p><img src="/assets/images/golearing/image-20220512213916418.png" alt="image-20220512213916418"></p>
+<p>调用gostartcallfn函数后，栈变成：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">gostartcallfn</span><span class="params">(gobuf *gobuf, fv *funcval)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> fn unsafe.Pointer</span><br><span class="line">	<span class="keyword">if</span> fv != <span class="literal">nil</span> &#123;</span><br><span class="line">		fn = unsafe.Pointer(fv.fn)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		fn = unsafe.Pointer(abi.FuncPCABIInternal(nilfunc))</span><br><span class="line">	&#125;</span><br><span class="line">	gostartcall(gobuf, fn, unsafe.Pointer(fv))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">gostartcall</span><span class="params">(buf *gobuf, fn, ctxt unsafe.Pointer)</span></span> &#123;</span><br><span class="line">	sp := buf.sp</span><br><span class="line">	sp -= goarch.PtrSize</span><br><span class="line">	*(*<span class="type">uintptr</span>)(unsafe.Pointer(sp)) = buf.pc</span><br><span class="line">	buf.sp = sp</span><br><span class="line">	buf.pc = <span class="type">uintptr</span>(fn)</span><br><span class="line">	buf.ctxt = ctxt</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/assets/images/golearing/image-20220512213933729.png" alt="image-20220512213933729"></p>
+<p>在栈顶减去8字节空间，并将<code>PC(goexit)+1</code>存入栈顶地址上，将PC寄存器（当前还未真实设置PC寄存器，在执行新协程时，会将g.sched.pc的值存入PC寄存器）的值设置成fn地址，这个过程就是汇编代码<code>call fn</code>的过程。</p>
+<p>这个过程至关重要，最后的效果是模拟goexit调用fn，当协程执行完后，将退栈并继续执行goexit函数。</p>
+<h4 id="存入可运行队列">存入可运行队列</h4>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入参_p_：当前所在的m绑定的p对象</span></span><br><span class="line"><span class="comment">//入参gp：新建的g对象</span></span><br><span class="line"><span class="comment">//入参next：是否优先放置到runnext</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">runqput</span><span class="params">(_p_ *p, gp *g, next <span class="type">bool</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> randomizeScheduler &amp;&amp; next &amp;&amp; fastrandn(<span class="number">2</span>) == <span class="number">0</span> &#123;<span class="comment">//如果是随机调度模式，则一半概率是不放置到runnext</span></span><br><span class="line">		next = <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> next &#123;<span class="comment">//如果优先放置到runnext，则尝试将gp放置到runnext位置，如果runnext本身为空则返回，否则需要将原runnext放到队尾</span></span><br><span class="line">	retryNext:</span><br><span class="line">		oldnext := _p_.runnext</span><br><span class="line">		<span class="keyword">if</span> !_p_.runnext.cas(oldnext, guintptr(unsafe.Pointer(gp))) &#123;</span><br><span class="line">			<span class="keyword">goto</span> retryNext</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> oldnext == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// Kick the old runnext out to the regular run queue.</span></span><br><span class="line">		gp = oldnext.ptr()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">retry:<span class="comment">//如果可运行队列未满，则将gp放置到队尾，否则将一半的gp从本地可运行队列放至全局可运行队列中</span></span><br><span class="line">	h := atomic.LoadAcq(&amp;_p_.runqhead) <span class="comment">// load-acquire, synchronize with consumers</span></span><br><span class="line">	t := _p_.runqtail</span><br><span class="line">	<span class="keyword">if</span> t-h &lt; <span class="type">uint32</span>(<span class="built_in">len</span>(_p_.runq)) &#123;</span><br><span class="line">		_p_.runq[t%<span class="type">uint32</span>(<span class="built_in">len</span>(_p_.runq))].set(gp)</span><br><span class="line">		atomic.StoreRel(&amp;_p_.runqtail, t+<span class="number">1</span>) <span class="comment">// store-release, makes the item available for consumption</span></span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> runqputslow(_p_, gp, h, t) &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// the queue is not full, now the put above must succeed</span></span><br><span class="line">	<span class="keyword">goto</span> retry</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认情况下，新建的g对象优先放置到本地可运行队列的runnext上，并将runnext上的g对象放至本地可运行队列队尾。如果本地可运行队列满，则将队列中前一半的g对象放至全局可运行队列中。</p>
+<h4 id="唤醒P对象">唤醒P对象</h4>
+<p>如果主协程已经启动，需要唤醒p对象来调度goroutine。唤醒p对象实际是startm过程（上一节已经描述）。为什么需要唤醒p呢？是因为新建的g对象肯定是没有被调度的（因为创建该g对象的goroutine正在被所在的m调度），所以为了尽最快速度调度新建的g对象，可以唤醒p对象来执行新建的g对象。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">wakep</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">if</span> atomic.Load(&amp;sched.npidle) == <span class="number">0</span> &#123;</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// be conservative about spinning threads</span></span><br><span class="line">   <span class="keyword">if</span> atomic.Load(&amp;sched.nmspinning) != <span class="number">0</span> || !atomic.Cas(&amp;sched.nmspinning, <span class="number">0</span>, <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   startm(<span class="literal">nil</span>, <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-14</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>

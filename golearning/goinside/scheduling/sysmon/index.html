@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summery">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下篇.浅出Go语言</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="系统监控">系统监控</h3>
+<hr>
+<p>在进程启动过程中，将创建一个专门用来监控系统的m，其入口函数为<code>sysmon</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sysmon</span><span class="params">()</span></span> &#123;</span><br><span class="line">   lock(&amp;sched.lock)</span><br><span class="line">   sched.nmsys++</span><br><span class="line">   checkdead()</span><br><span class="line">   unlock(&amp;sched.lock)</span><br><span class="line"></span><br><span class="line">   lasttrace := <span class="type">int64</span>(<span class="number">0</span>)</span><br><span class="line">   idle := <span class="number">0</span> <span class="comment">// how many cycles in succession we had not wokeup somebody</span></span><br><span class="line">   delay := <span class="type">uint32</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> &#123;</span><br><span class="line">      <span class="comment">// 计算休眠时间，如果所有的p处于休眠状态越长，休眠的时间越长</span></span><br><span class="line">      <span class="keyword">if</span> idle == <span class="number">0</span> &#123; <span class="comment">// start with 20us sleep...</span></span><br><span class="line">         delay = <span class="number">20</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> idle &gt; <span class="number">50</span> &#123; <span class="comment">// start doubling the sleep after 1ms...</span></span><br><span class="line">         delay *= <span class="number">2</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> delay &gt; <span class="number">10</span>*<span class="number">1000</span> &#123; <span class="comment">// up to 10ms</span></span><br><span class="line">         delay = <span class="number">10</span> * <span class="number">1000</span></span><br><span class="line">      &#125;</span><br><span class="line">      usleep(delay) <span class="comment">// 休眠一段时间</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">// sysmon should not enter deep sleep if schedtrace is enabled so that</span></span><br><span class="line">      <span class="comment">// it can print that information at the right time.</span></span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      <span class="comment">// It should also not enter deep sleep if there are any active P&#x27;s so</span></span><br><span class="line">      <span class="comment">// that it can retake P&#x27;s from syscalls, preempt long running G&#x27;s, and</span></span><br><span class="line">      <span class="comment">// poll the network if all P&#x27;s are busy for long stretches.</span></span><br><span class="line">      <span class="comment">//</span></span><br><span class="line">      <span class="comment">// It should wakeup from deep sleep if any P&#x27;s become active either due</span></span><br><span class="line">      <span class="comment">// to exiting a syscall or waking up due to a timer expiring so that it</span></span><br><span class="line">      <span class="comment">// can resume performing those duties. If it wakes from a syscall it</span></span><br><span class="line">      <span class="comment">// resets idle and delay as a bet that since it had retaken a P from a</span></span><br><span class="line">      <span class="comment">// syscall before, it may need to do it again shortly after the</span></span><br><span class="line">      <span class="comment">// application starts work again. It does not reset idle when waking</span></span><br><span class="line">      <span class="comment">// from a timer to avoid adding system load to applications that spend</span></span><br><span class="line">      <span class="comment">// most of their time sleeping.</span></span><br><span class="line">      <span class="comment">// 当进程处于gc等待阶段或所有的p都处于空闲状态，则休眠到第一个定时器超时。</span></span><br><span class="line">      now := nanotime()</span><br><span class="line">      <span class="keyword">if</span> debug.schedtrace &lt;= <span class="number">0</span> &amp;&amp; (sched.gcwaiting != <span class="number">0</span> || atomic.Load(&amp;sched.npidle) == <span class="type">uint32</span>(gomaxprocs)) &#123;</span><br><span class="line">         lock(&amp;sched.lock)</span><br><span class="line">         <span class="keyword">if</span> atomic.Load(&amp;sched.gcwaiting) != <span class="number">0</span> || atomic.Load(&amp;sched.npidle) == <span class="type">uint32</span>(gomaxprocs) &#123;</span><br><span class="line">            syscallWake := <span class="literal">false</span></span><br><span class="line">            next, _ := timeSleepUntil()</span><br><span class="line">            <span class="keyword">if</span> next &gt; now &#123;</span><br><span class="line">               atomic.Store(&amp;sched.sysmonwait, <span class="number">1</span>)</span><br><span class="line">               unlock(&amp;sched.lock)</span><br><span class="line">               <span class="comment">// Make wake-up period small enough</span></span><br><span class="line">               <span class="comment">// for the sampling to be correct.</span></span><br><span class="line">               sleep := forcegcperiod / <span class="number">2</span></span><br><span class="line">               <span class="keyword">if</span> next-now &lt; sleep &#123;</span><br><span class="line">                  sleep = next - now</span><br><span class="line">               &#125;</span><br><span class="line">               shouldRelax := sleep &gt;= osRelaxMinNS</span><br><span class="line">               <span class="keyword">if</span> shouldRelax &#123;</span><br><span class="line">                  osRelax(<span class="literal">true</span>)</span><br><span class="line">               &#125;</span><br><span class="line">               syscallWake = notetsleep(&amp;sched.sysmonnote, sleep)</span><br><span class="line">               <span class="keyword">if</span> shouldRelax &#123;</span><br><span class="line">                  osRelax(<span class="literal">false</span>)</span><br><span class="line">               &#125;</span><br><span class="line">               lock(&amp;sched.lock)</span><br><span class="line">               atomic.Store(&amp;sched.sysmonwait, <span class="number">0</span>)</span><br><span class="line">               noteclear(&amp;sched.sysmonnote)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> syscallWake &#123;</span><br><span class="line">               idle = <span class="number">0</span></span><br><span class="line">               delay = <span class="number">20</span></span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         unlock(&amp;sched.lock)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      lock(&amp;sched.sysmonlock)</span><br><span class="line">      <span class="comment">// Update now in case we blocked on sysmonnote or spent a long time</span></span><br><span class="line">      <span class="comment">// blocked on schedlock or sysmonlock above.</span></span><br><span class="line">      now = nanotime()</span><br><span class="line"></span><br><span class="line">      <span class="comment">// trigger libc interceptors if needed</span></span><br><span class="line">      <span class="keyword">if</span> *cgo_yield != <span class="literal">nil</span> &#123;</span><br><span class="line">         asmcgocall(*cgo_yield, <span class="literal">nil</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// poll network if not polled for more than 10ms</span></span><br><span class="line">      <span class="comment">// 如果距离上一次轮询网络超过10ms，则再次轮询网络</span></span><br><span class="line">      lastpoll := <span class="type">int64</span>(atomic.Load64(&amp;sched.lastpoll))</span><br><span class="line">      <span class="keyword">if</span> netpollinited() &amp;&amp; lastpoll != <span class="number">0</span> &amp;&amp; lastpoll+<span class="number">10</span>*<span class="number">1000</span>*<span class="number">1000</span> &lt; now &#123;</span><br><span class="line">         atomic.Cas64(&amp;sched.lastpoll, <span class="type">uint64</span>(lastpoll), <span class="type">uint64</span>(now))</span><br><span class="line">         list := netpoll(<span class="number">0</span>) <span class="comment">// non-blocking - returns list of goroutines</span></span><br><span class="line">         <span class="comment">// 如果当前存在不处于阻塞的g，则将g加入到本地可运行队列或者全局可运行队列</span></span><br><span class="line">         <span class="keyword">if</span> !list.empty() &#123;</span><br><span class="line">            <span class="comment">// Need to decrement number of idle locked M&#x27;s</span></span><br><span class="line">            <span class="comment">// (pretending that one more is running) before injectglist.</span></span><br><span class="line">            <span class="comment">// Otherwise it can lead to the following situation:</span></span><br><span class="line">            <span class="comment">// injectglist grabs all P&#x27;s but before it starts M&#x27;s to run the P&#x27;s,</span></span><br><span class="line">            <span class="comment">// another M returns from syscall, finishes running its G,</span></span><br><span class="line">            <span class="comment">// observes that there is no work to do and no other running M&#x27;s</span></span><br><span class="line">            <span class="comment">// and reports deadlock.</span></span><br><span class="line">            incidlelocked(<span class="number">-1</span>)</span><br><span class="line">            injectglist(&amp;list)</span><br><span class="line">            incidlelocked(<span class="number">1</span>)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> GOOS == <span class="string">&quot;netbsd&quot;</span> &amp;&amp; needSysmonWorkaround &#123;</span><br><span class="line">         <span class="comment">// netpoll is responsible for waiting for timer</span></span><br><span class="line">         <span class="comment">// expiration, so we typically don&#x27;t have to worry</span></span><br><span class="line">         <span class="comment">// about starting an M to service timers. (Note that</span></span><br><span class="line">         <span class="comment">// sleep for timeSleepUntil above simply ensures sysmon</span></span><br><span class="line">         <span class="comment">// starts running again when that timer expiration may</span></span><br><span class="line">         <span class="comment">// cause Go code to run again).</span></span><br><span class="line">         <span class="comment">//</span></span><br><span class="line">         <span class="comment">// However, netbsd has a kernel bug that sometimes</span></span><br><span class="line">         <span class="comment">// misses netpollBreak wake-ups, which can lead to</span></span><br><span class="line">         <span class="comment">// unbounded delays servicing timers. If we detect this</span></span><br><span class="line">         <span class="comment">// overrun, then startm to get something to handle the</span></span><br><span class="line">         <span class="comment">// timer.</span></span><br><span class="line">         <span class="comment">//</span></span><br><span class="line">         <span class="comment">// See issue 42515 and</span></span><br><span class="line">         <span class="comment">// https://gnats.netbsd.org/cgi-bin/query-pr-single.pl?number=50094.</span></span><br><span class="line">         <span class="keyword">if</span> next, _ := timeSleepUntil(); next &lt; now &#123;</span><br><span class="line">            startm(<span class="literal">nil</span>, <span class="literal">false</span>)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> atomic.Load(&amp;scavenge.sysmonWake) != <span class="number">0</span> &#123;</span><br><span class="line">         <span class="comment">// Kick the scavenger awake if someone requested it.</span></span><br><span class="line">         wakeScavenger()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// retake P&#x27;s blocked in syscalls</span></span><br><span class="line">      <span class="comment">// and preempt long running G&#x27;s</span></span><br><span class="line">      <span class="comment">// 重新获取阻塞在系统调用的p，并抢占长时间运行的g</span></span><br><span class="line">      <span class="keyword">if</span> retake(now) != <span class="number">0</span> &#123;</span><br><span class="line">         idle = <span class="number">0</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">         idle++</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// check if we need to force a GC</span></span><br><span class="line">      <span class="comment">// 如果距离上次gc超过2分钟则启动强制gc</span></span><br><span class="line">      <span class="keyword">if</span> t := (gcTrigger&#123;kind: gcTriggerTime, now: now&#125;); t.test() &amp;&amp; atomic.Load(&amp;forcegc.idle) != <span class="number">0</span> &#123;</span><br><span class="line">         lock(&amp;forcegc.lock)</span><br><span class="line">         forcegc.idle = <span class="number">0</span></span><br><span class="line">         <span class="keyword">var</span> list gList</span><br><span class="line">         list.push(forcegc.g)</span><br><span class="line">         injectglist(&amp;list)</span><br><span class="line">         unlock(&amp;forcegc.lock)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> debug.schedtrace &gt; <span class="number">0</span> &amp;&amp; lasttrace+<span class="type">int64</span>(debug.schedtrace)*<span class="number">1000000</span> &lt;= now &#123;</span><br><span class="line">         lasttrace = now</span><br><span class="line">         schedtrace(debug.scheddetail &gt; <span class="number">0</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      unlock(&amp;sched.sysmonlock)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上述代码中可以看出，系统监控m除了休眠外主要做了如下3件事务：</p>
+<ol>
+<li>周期性（距离上一次轮询超过10ms）轮询网络，并将处于就绪状态的g对象插入到可运行队列中</li>
+<li>重新获取阻塞在系统的p，并抢占长时间运行的g</li>
+<li>如果距离上次gc超过2分钟则启动强制gc</li>
+</ol>
+<p>其中，事务2的处理规则如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">retake</span><span class="params">(now <span class="type">int64</span>)</span></span> <span class="type">uint32</span> &#123;</span><br><span class="line">   n := <span class="number">0</span></span><br><span class="line">   <span class="comment">// Prevent allp slice changes. This lock will be completely</span></span><br><span class="line">   <span class="comment">// uncontended unless we&#x27;re already stopping the world.</span></span><br><span class="line">   lock(&amp;allpLock)</span><br><span class="line">   <span class="comment">// We can&#x27;t use a range loop over allp because we may</span></span><br><span class="line">   <span class="comment">// temporarily drop the allpLock. Hence, we need to re-fetch</span></span><br><span class="line">   <span class="comment">// allp each time around the loop.</span></span><br><span class="line">   <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(allp); i++ &#123;<span class="comment">// 遍历所有的p</span></span><br><span class="line">      _p_ := allp[i]</span><br><span class="line">      <span class="keyword">if</span> _p_ == <span class="literal">nil</span> &#123;</span><br><span class="line">         <span class="comment">// This can happen if procresize has grown</span></span><br><span class="line">         <span class="comment">// allp but not yet created new Ps.</span></span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">      &#125;</span><br><span class="line">      pd := &amp;_p_.sysmontick</span><br><span class="line">      s := _p_.status</span><br><span class="line">      sysretake := <span class="literal">false</span></span><br><span class="line">      <span class="keyword">if</span> s == _Prunning || s == _Psyscall &#123; <span class="comment">// 如果当前p的状态是_Prunning或者_Psyscall</span></span><br><span class="line">         <span class="comment">// Preempt G if it&#x27;s running for too long.</span></span><br><span class="line">         t := <span class="type">int64</span>(_p_.schedtick) </span><br><span class="line">         <span class="keyword">if</span> <span class="type">int64</span>(pd.schedtick) != t &#123; </span><br><span class="line">          <span class="comment">// 如果p.sysmontick.schedtick与p.schedtick不相等，则更新p.sysmontick.schedtick并且更新schedwhen为当前时间</span></span><br><span class="line">            pd.schedtick = <span class="type">uint32</span>(t)</span><br><span class="line">            pd.schedwhen = now</span><br><span class="line">         &#125; <span class="keyword">else</span> <span class="keyword">if</span> pd.schedwhen+forcePreemptNS &lt;= now &#123;<span class="comment">// 如果p单次运行时间超过10ms，则抢占当前p正在执行的g。</span></span><br><span class="line">            preemptone(_p_)</span><br><span class="line">            <span class="comment">// In case of syscall, preemptone() doesn&#x27;t</span></span><br><span class="line">            <span class="comment">// work, because there is no M wired to P.</span></span><br><span class="line">            sysretake = <span class="literal">true</span></span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> s == _Psyscall &#123;</span><br><span class="line">         <span class="comment">// Retake P from syscall if it&#x27;s there for more than 1 sysmon tick (at least 20us).</span></span><br><span class="line">         t := <span class="type">int64</span>(_p_.syscalltick)</span><br><span class="line">         <span class="keyword">if</span> !sysretake &amp;&amp; <span class="type">int64</span>(pd.syscalltick) != t &#123;</span><br><span class="line">            pd.syscalltick = <span class="type">uint32</span>(t)</span><br><span class="line">            pd.syscallwhen = now</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">// On the one hand we don&#x27;t want to retake Ps if there is no other work to do,</span></span><br><span class="line">         <span class="comment">// but on the other hand we want to retake them eventually</span></span><br><span class="line">         <span class="comment">// because they can prevent the sysmon thread from deep sleep.</span></span><br><span class="line">         <span class="keyword">if</span> runqempty(_p_) &amp;&amp; atomic.Load(&amp;sched.nmspinning)+atomic.Load(&amp;sched.npidle) &gt; <span class="number">0</span> &amp;&amp; pd.syscallwhen+<span class="number">10</span>*<span class="number">1000</span>*<span class="number">1000</span> &gt; now &#123;</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="comment">// Drop allpLock so we can take sched.lock.</span></span><br><span class="line">         unlock(&amp;allpLock)</span><br><span class="line">         <span class="comment">// Need to decrement number of idle locked M&#x27;s</span></span><br><span class="line">         <span class="comment">// (pretending that one more is running) before the CAS.</span></span><br><span class="line">         <span class="comment">// Otherwise the M from which we retake can exit the syscall,</span></span><br><span class="line">         <span class="comment">// increment nmidle and report deadlock.</span></span><br><span class="line">         incidlelocked(<span class="number">-1</span>)</span><br><span class="line">         <span class="keyword">if</span> atomic.Cas(&amp;_p_.status, s, _Pidle) &#123; <span class="comment">// 将p的状态设置成_Pidle</span></span><br><span class="line">            <span class="keyword">if</span> trace.enabled &#123;</span><br><span class="line">               traceGoSysBlock(_p_)</span><br><span class="line">               traceProcStop(_p_)</span><br><span class="line">            &#125;</span><br><span class="line">            n++</span><br><span class="line">            _p_.syscalltick++</span><br><span class="line">            handoffp(_p_) <span class="comment">// 从当前执行的m中移出p对象</span></span><br><span class="line">         &#125;</span><br><span class="line">         incidlelocked(<span class="number">1</span>)</span><br><span class="line">         lock(&amp;allpLock)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   unlock(&amp;allpLock)</span><br><span class="line">   <span class="keyword">return</span> <span class="type">uint32</span>(n)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上述代码看出，如果p单次调度超过10ms，则将当前执行的协程抢占，抢占的实现如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preemptone</span><span class="params">(_p_ *p)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">   mp := _p_.m.ptr()</span><br><span class="line">   <span class="keyword">if</span> mp == <span class="literal">nil</span> || mp == getg().m &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">   &#125;</span><br><span class="line">   gp := mp.curg</span><br><span class="line">   <span class="keyword">if</span> gp == <span class="literal">nil</span> || gp == mp.g0 &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   gp.preempt = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// Every call in a goroutine checks for stack overflow by</span></span><br><span class="line">   <span class="comment">// comparing the current stack pointer to gp-&gt;stackguard0.</span></span><br><span class="line">   <span class="comment">// Setting gp-&gt;stackguard0 to StackPreempt folds</span></span><br><span class="line">   <span class="comment">// preemption into the normal stack overflow check.</span></span><br><span class="line">   gp.stackguard0 = stackPreempt</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Request an async preemption of this P.</span></span><br><span class="line">   <span class="keyword">if</span> preemptMSupported &amp;&amp; debug.asyncpreemptoff == <span class="number">0</span> &#123;</span><br><span class="line">      _p_.preempt = <span class="literal">true</span></span><br><span class="line">      preemptM(mp)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中关键处理为<code>gp.stackguard0 = stackPreempt</code>，在goroutine每次调用函数时，默认都会进行栈检查即判断<code>SP &gt; gp.stackguard0</code>（栈是从高地址向低地址生长，正常情况下SP都应该大于栈保护线<code>stackguard0</code>），当<code>gp.stackguard0 = stackPreempt</code>时（<code>stackPreempt</code>是一个非常大的值），将大于SP，导致栈检查失败，切换到另外一个协程执行。</p>
+<p>另外，如果p单次系统调用时间超过10ms，则将p移交处理其它协程。p移交后，调度p的m则继续系统调用。移交过程如下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handoffp</span><span class="params">(_p_ *p)</span></span> &#123;</span><br><span class="line">   <span class="comment">// handoffp must start an M in any situation where</span></span><br><span class="line">   <span class="comment">// findrunnable would return a G to run on _p_.</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// if it has local work, start it straight away</span></span><br><span class="line">   <span class="keyword">if</span> !runqempty(_p_) || sched.runqsize != <span class="number">0</span> &#123;</span><br><span class="line">      startm(_p_, <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// if it has GC work, start it straight away</span></span><br><span class="line">   <span class="keyword">if</span> gcBlackenEnabled != <span class="number">0</span> &amp;&amp; gcMarkWorkAvailable(_p_) &#123;</span><br><span class="line">      startm(_p_, <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// no local work, check that there are no spinning/idle M&#x27;s,</span></span><br><span class="line">   <span class="comment">// otherwise our help is not required</span></span><br><span class="line">   <span class="keyword">if</span> atomic.Load(&amp;sched.nmspinning)+atomic.Load(&amp;sched.npidle) == <span class="number">0</span> &amp;&amp; atomic.Cas(&amp;sched.nmspinning, <span class="number">0</span>, <span class="number">1</span>) &#123; <span class="comment">// <span class="doctag">TODO:</span> fast atomic</span></span><br><span class="line">      startm(_p_, <span class="literal">true</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   lock(&amp;sched.lock)</span><br><span class="line">   <span class="keyword">if</span> sched.gcwaiting != <span class="number">0</span> &#123;</span><br><span class="line">      _p_.status = _Pgcstop</span><br><span class="line">      sched.stopwait--</span><br><span class="line">      <span class="keyword">if</span> sched.stopwait == <span class="number">0</span> &#123;</span><br><span class="line">         notewakeup(&amp;sched.stopnote)</span><br><span class="line">      &#125;</span><br><span class="line">      unlock(&amp;sched.lock)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> _p_.runSafePointFn != <span class="number">0</span> &amp;&amp; atomic.Cas(&amp;_p_.runSafePointFn, <span class="number">1</span>, <span class="number">0</span>) &#123;</span><br><span class="line">      sched.safePointFn(_p_)</span><br><span class="line">      sched.safePointWait--</span><br><span class="line">      <span class="keyword">if</span> sched.safePointWait == <span class="number">0</span> &#123;</span><br><span class="line">         notewakeup(&amp;sched.safePointNote)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> sched.runqsize != <span class="number">0</span> &#123;</span><br><span class="line">      unlock(&amp;sched.lock)</span><br><span class="line">      startm(_p_, <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// If this is the last running P and nobody is polling network,</span></span><br><span class="line">   <span class="comment">// need to wakeup another M to poll network.</span></span><br><span class="line">   <span class="keyword">if</span> sched.npidle == <span class="type">uint32</span>(gomaxprocs<span class="number">-1</span>) &amp;&amp; atomic.Load64(&amp;sched.lastpoll) != <span class="number">0</span> &#123;</span><br><span class="line">      unlock(&amp;sched.lock)</span><br><span class="line">      startm(_p_, <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// The scheduler lock cannot be held when calling wakeNetPoller below</span></span><br><span class="line">   <span class="comment">// because wakeNetPoller may call wakep which may call startm.</span></span><br><span class="line">   when := nobarrierWakeTime(_p_)</span><br><span class="line">   pidleput(_p_)</span><br><span class="line">   unlock(&amp;sched.lock)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> when != <span class="number">0</span> &#123;</span><br><span class="line">      wakeNetPoller(when)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中可以看出，移交过程优先唤醒m来调度p，如果可运行队列中没有可运行的g、或者网络轮询中无事件等，则将p放入sched.pidle链表中。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-14</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
