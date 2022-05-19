@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summary">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+<li><a href="/golearning/goinside/scheduling/newproc">2.4 创建协程</a></li>
+<li><a href="/golearning/goinside/scheduling/schedule">2.5 循环调度</a></li>
+<li><a href="/golearning/goinside/scheduling/sysmon">2.6 系统监控</a></li>
+<li><a href="/golearning/goinside/scheduling/summary">2.7 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第三章 进程启动</p>
+<ul>
+<li><a href="/golearning/goinside/startup/abstract">3.1 概述</a></li>
+<li><a href="/golearning/goinside/startup/startup">3.2 进程启动</a></li>
+<li><a href="/golearning/goinside/startup/tls">2.3 线程本地存储</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="线程本地存储">线程本地存储</h3>
+<hr>
+<p>线程本地存储（TLS: thread local storage）为每个线程有独立的存储空间来存储线程变量。当一个线程修改线程变量的值时，不影响另外一个线程读取线程变量的值。因为线程变量在每个线程的TLS都有一份，访问时只能读取所在TLS中的线程变量值。</p>
+<p>在x86-64系统下，与线程本地存储有关的寄存器是FS寄存器：</p>
+<ul>
+<li>FS寄存器：用户态使用FS寄存器保存线程本地存储的基址</li>
+</ul>
+<p>可用通过调用系统函数设置或者查询TLS基址：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">syscall</span><span class="params">(SYS_arch_prctl, <span class="type">int</span> code, <span class="type">unsigned</span> <span class="type">long</span> addr)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">syscall</span><span class="params">(SYS_arch_prctl, <span class="type">int</span> code, <span class="type">unsigned</span> <span class="type">long</span> *addr)</span>;</span><br></pre></td></tr></table></figure>
+<p>其中code的取值：</p>
+<blockquote>
+<p><strong>ARCH_SET_FS</strong></p>
+<p>Set the 64-bit base for the <em>FS</em> register to <em>addr</em>.</p>
+<p><strong>ARCH_GET_FS</strong></p>
+<p>Return the 64-bit base value for the <em>FS</em> register of the current thread in the <em>unsigned</em> long pointed to by <em>addr</em>.</p>
+<p><strong>ARCH_SET_GS</strong></p>
+<p>Set the 64-bit base for the <em>GS</em> register to <em>addr</em>.</p>
+<p><strong>ARCH_GET_GS</strong></p>
+<p>Return the 64-bit base value for the <em>GS</em> register of the current thread in the <em>unsigned</em> long pointed to by <em>addr</em>.</p>
+</blockquote>
+<p>Go本身不提供线程本地存储能力（对于Go编程人员来说，直接面对的是协程），而是在内核使用了TLS机制来协助完成协程的调度。</p>
+<p>Go内核使用到LTS的有以下几处地方：</p>
+<ol>
+<li>在启动函数<code>runtime·rt0_go</code>中</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LEAQ    runtime·m0+m_tls(SB), DI // 将runtime·m0.tls地址存入DI寄存器</span><br><span class="line">CALL    runtime·settls(SB)       // 调用runtime·settls函数</span><br><span class="line">...</span><br><span class="line">get_tls(BX) // 将LTS地址（下限地址）保存到BX寄存器</span><br><span class="line">LEAQ	runtime·g0(SB), CX // 将runtime·g0地址存入CX寄存器</span><br><span class="line">MOVQ	CX, g(BX) // 将CX值（runtime·g0地址）存入LTS地址</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">TEXT runtime·settls(SB),NOSPLIT,$32</span><br><span class="line">#ifdef GOOS_android</span><br><span class="line">   // Android stores the TLS offset in runtime·tls_g.</span><br><span class="line">   SUBQ   runtime·tls_g(SB), DI</span><br><span class="line">#else</span><br><span class="line">   ADDQ   $8, DI // ELF wants to use -8(FS) // 将DI值+8（runtime·m0.tls+8）并存入DI寄存器</span><br><span class="line">#endif</span><br><span class="line">   MOVQ   DI, SI         // 将DI值存入SI寄存器</span><br><span class="line">   MOVQ   $0x1002, DI    // 将0x1002（ARCH_SET_FS）存入DI寄存器</span><br><span class="line">   MOVQ   $SYS_arch_prctl, AX // 将SYS_arch_prctl函数地址存入AX寄存器</span><br><span class="line">   SYSCALL                    // 调用SYSCALL</span><br><span class="line">   CMPQ   AX, $0xfffffffffffff001 // 比较AX值和-1比较，判断系统调用范围值是否为-1</span><br><span class="line">   JLS    2(PC)                   // 小于-1，则跳转到PC+2指令即RET</span><br><span class="line">   MOVL   $0xf1, 0xf1  // crash   // 等于-1，则crash</span><br><span class="line">   RET</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> get_tls(r) MOVQ TLS, r</span></span><br></pre></td></tr></table></figure>
+<p>以上代码的目的是将<code>m0.tls</code>保存到FS寄存器，作为LTS的基址。其中m结构体中的tls为长度为6的uintptr数组，即每个m可以用来作为LTS的空间大小为48字节。因为FS寄存器存储的TLS基址是TLS的上限地址，所以上述汇编<code>runtime·settls</code>要将<code>runtime·m0.tls+8</code>保存到FS寄存器，即TLS空间大小为8字节，即<code>runtime·m0.tls[0]</code>内存空间。</p>
+<p>然后将<code>runtime·g0</code>地址保存到LTS中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type m struct &#123;</span><br><span class="line">   ...</span><br><span class="line">   tls           [tlsSlots]uintptr // thread-local storage (for x86 extern register)</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>在创建m的过程中，调用<code>newosproc</code>创建系统线程，<code>newosproc</code>会调用<code>clone</code>函数，在<code>clone</code>函数中将调用<code>SYS_clone</code>，同样将<code>m.tls[0]</code>作为LTS，并将<code>m.g0</code>保存到LTS中。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// int32 clone(int32 flags, void *stk, M *mp, G *gp, void (*fn)(void));</span><br><span class="line">TEXT runtime·clone(SB),NOSPLIT,$0</span><br><span class="line">   MOVL   flags+0(FP), DI</span><br><span class="line">   MOVQ   stk+8(FP), SI</span><br><span class="line">   MOVQ   $0, DX</span><br><span class="line">   MOVQ   $0, R10</span><br><span class="line">   MOVQ    $0, R8</span><br><span class="line">   // Copy mp, gp, fn off parent stack for use by child.</span><br><span class="line">   // Careful: Linux system call clobbers CX and R11.</span><br><span class="line">   MOVQ   mp+16(FP), R13</span><br><span class="line">   MOVQ   gp+24(FP), R9</span><br><span class="line">   MOVQ   fn+32(FP), R12</span><br><span class="line">   CMPQ   R13, $0    // m</span><br><span class="line">   JEQ    nog1</span><br><span class="line">   CMPQ   R9, $0    // g</span><br><span class="line">   JEQ    nog1</span><br><span class="line">   LEAQ   m_tls(R13), R8</span><br><span class="line">#ifdef GOOS_android</span><br><span class="line">   // Android stores the TLS offset in runtime·tls_g.</span><br><span class="line">   SUBQ   runtime·tls_g(SB), R8</span><br><span class="line">#else</span><br><span class="line">   ADDQ   $8, R8 // ELF wants to use -8(FS)</span><br><span class="line">#endif</span><br><span class="line">   ORQ    $0x00080000, DI //add flag CLONE_SETTLS(0x00080000) to call clone</span><br><span class="line">nog1:</span><br><span class="line">   MOVL   $SYS_clone, AX</span><br><span class="line">   SYSCALL</span><br><span class="line">   ...</span><br><span class="line">   // In child, set up new stack</span><br><span class="line">   get_tls(CX)</span><br><span class="line">   MOVQ	R13, g_m(R9)</span><br><span class="line">   MOVQ	R9, g(CX)</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>在调度器选择可运行g后，使用gogo执行g的过程中将执行的g地址保存到LTS中。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TEXT runtime·gogo(SB), NOSPLIT, $0-8</span><br><span class="line">   MOVQ   buf+0(FP), BX   // FP指向入参起始位置，所以FP+0指向第一个入参，即gobuf</span><br><span class="line">   MOVQ   gobuf_g(BX), DX // 将gobuf.g存入DX</span><br><span class="line">   MOVQ   0(DX), CX       // 将gobuf.g存入CX</span><br><span class="line">   JMP    gogo&lt;&gt;(SB)      // 跳转到gogo</span><br><span class="line"></span><br><span class="line">TEXT gogo&lt;&gt;(SB), NOSPLIT, $0</span><br><span class="line">   get_tls(CX)          // 将TLS地址存入CX</span><br><span class="line">   MOVQ   DX, g(CX)     // 将DX的值（gobuf.g）存入CX指向的地址（TLS）</span><br><span class="line">   MOVQ   DX, R14       // 将DX的值（gobuf.g）存入R14</span><br><span class="line">   MOVQ   gobuf_sp(BX), SP    // 将gobuf.sp存入SP</span><br><span class="line">   MOVQ   gobuf_ret(BX), AX   // 将gobuf.ret存入AX</span><br><span class="line">   MOVQ   gobuf_ctxt(BX), DX  // 将gobuf.ctxt存入DX</span><br><span class="line">   MOVQ   gobuf_bp(BX), BP    // 将gobuf.bp存入BP</span><br><span class="line">   MOVQ   $0, gobuf_sp(BX)    // 将gobuf.sp清零</span><br><span class="line">   MOVQ   $0, gobuf_ret(BX)   // 将gobuf.ret清零 </span><br><span class="line">   MOVQ   $0, gobuf_ctxt(BX)  // 将gobuf.ctxt清零 </span><br><span class="line">   MOVQ   $0, gobuf_bp(BX)    // 将gobuf.bp清零 </span><br><span class="line">   MOVQ   gobuf_pc(BX), BX    // 将gobuf.pc存入BX</span><br><span class="line">   JMP    BX                  // 跳转到BX指向的地址</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>从LTS中读取的关键函数是<code>getg</code>，<code>getg</code>是内建函数，从注释可以看出是从TLS中读取保存的g对象。</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getg returns the pointer to the current g.</span></span><br><span class="line"><span class="comment">// The compiler rewrites calls to this function into instructions</span></span><br><span class="line"><span class="comment">// that fetch the g directly (from TLS or from the dedicated register).</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getg</span><span class="params">()</span></span> *g</span><br></pre></td></tr></table></figure>
+<p>当然还有其它地方使用到了LTS，概括起来就是，在创建m时，将g0地址存放在线程的LTS中；在切换协程时，将切换后的协程地址存放在线程的LTS中；在需要获取当前协程的地方，从LTS中读取当前协程的g地址。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-19</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>

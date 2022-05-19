@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summary">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+<li><a href="/golearning/goinside/scheduling/newproc">2.4 创建协程</a></li>
+<li><a href="/golearning/goinside/scheduling/schedule">2.5 循环调度</a></li>
+<li><a href="/golearning/goinside/scheduling/sysmon">2.6 系统监控</a></li>
+<li><a href="/golearning/goinside/scheduling/summary">2.7 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第三章 进程启动</p>
+<ul>
+<li><a href="/golearning/goinside/startup/abstract">3.1 概述</a></li>
+<li><a href="/golearning/goinside/startup/startup">3.2 进程启动</a></li>
+<li><a href="/golearning/goinside/startup/tls">2.3 线程本地存储</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="进程启动">进程启动</h3>
+<hr>
+<p>在linux系统下，像c程序一样，进程启动有一段引导过程，而并非直接调转到main函数接口并执行。通过readelf命令可以查看可执行程序入口函数，如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">readelf -a main</span></span><br><span class="line">ELF Header:</span><br><span class="line">  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  Class:                             ELF64</span><br><span class="line">  Data:                              2&#x27;s complement, little endian</span><br><span class="line">  Version:                           1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - System V</span><br><span class="line">  ABI Version:                       0</span><br><span class="line">  Type:                              EXEC (Executable file)</span><br><span class="line">  Machine:                           Advanced Micro Devices X86-64</span><br><span class="line">  Version:                           0x1</span><br><span class="line">  Entry point address:               0x45bfa0</span><br><span class="line">  Start of program headers:          64 (bytes into file)</span><br><span class="line">  Start of section headers:          456 (bytes into file)</span><br><span class="line">  Flags:                             0x0</span><br><span class="line">  Size of this header:               64 (bytes)</span><br><span class="line">  Size of program headers:           56 (bytes)</span><br><span class="line">  Number of program headers:         7</span><br><span class="line">  Size of section headers:           64 (bytes)</span><br><span class="line">  Number of section headers:         23</span><br><span class="line">  Section header string table index: 3</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Symbol table &#x27;.symtab&#x27; contains 2054 entries:</span><br><span class="line">   Num:    Value          Size Type    Bind   Vis      Ndx Name</span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line">  1094: 000000000045bfa0     5 FUNC    GLOBAL DEFAULT    1 _rt0_amd64_linux</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>从可执行程序的elf信息看，该程序的入口函数<code>Entry point address: 0x45bfa0</code>地址是<code>0x45bfa0</code>，即<code>_rt0_amd64_linux</code>函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TEXT _rt0_amd64_linux(SB),NOSPLIT,$-8</span><br><span class="line">   JMP    _rt0_amd64(SB)</span><br></pre></td></tr></table></figure>
+<p><code>_rt0_amd64_linux</code>函数将调转到<code>_rt0_amd64</code>函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TEXT _rt0_amd64(SB),NOSPLIT,$-8</span><br><span class="line">   MOVQ   0(SP), DI  // argc</span><br><span class="line">   LEAQ   8(SP), SI  // argv</span><br><span class="line">   JMP    runtime·rt0_go(SB)</span><br></pre></td></tr></table></figure>
+<p><code>_rt0_amd64</code>函数分别拷贝入参<code>argc</code>，<code>argv</code>到DI，SI寄存器中，并跳转到<code>runtime·rt0_go</code>函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br></pre></td><td class="code"><pre><span class="line">TEXT runtime·rt0_go(SB),NOSPLIT|TOPFRAME,$0</span><br><span class="line">	// copy arguments forward on an even stack</span><br><span class="line">	MOVQ	DI, AX		// 拷贝入参argc到AX寄存器</span><br><span class="line">	MOVQ	SI, BX		// 拷贝入参argv到BX寄存器</span><br><span class="line">	SUBQ	$(5*8), SP	// 开辟5*8字节堆栈空间，用于3个参数+2个auto（是什么？）</span><br><span class="line">	ANDQ	$~15, SP    // 将SP值对齐16字节（将SP值低4bit清零，SP值保持不变或者减小，栈空间扩大）   </span><br><span class="line">	MOVQ	AX, 24(SP)  // 将AX值(argc)存入SP+24栈地址上</span><br><span class="line">	MOVQ	BX, 32(SP)  // 将BX值(argv)存入SP+32栈地址上</span><br><span class="line"></span><br><span class="line">	// create istack out of the given (operating system) stack.</span><br><span class="line">	// _cgo_init may update stackguard.</span><br><span class="line">	MOVQ	$runtime·g0(SB), DI // 将runtime·g0全局变量（地址）存入DI寄存器</span><br><span class="line">	LEAQ	(-64*1024+104)(SP), BX // 将SP-64*1024+104值存入BX寄存器</span><br><span class="line">	MOVQ	BX, g_stackguard0(DI)  // 将BX值（SP-64*1024+104）赋值给runtime·g0.stackguard0</span><br><span class="line">	MOVQ	BX, g_stackguard1(DI)  // 将BX值（SP-64*1024+104）赋值给runtime·g0.stackguard1</span><br><span class="line">	MOVQ	BX, (g_stack+stack_lo)(DI) // 将BX值（SP-64*1024+104）赋值给runtime·g0.stack.stack_lo</span><br><span class="line">	MOVQ	SP, (g_stack+stack_hi)(DI) // 将当前SP值赋值给runtime·g0.stack.stack_hi</span><br><span class="line"></span><br><span class="line">	// find out information about the processor we&#x27;re on</span><br><span class="line">	MOVL	$0, AX // 将0赋值给AX寄存器，CPUID指令将根据AX值打印不同的CPU信息</span><br><span class="line">	CPUID          // 打印CPU信息，并将CPU信息存于BX，DX，CX寄存器，并将处理结果存于AX寄存器</span><br><span class="line">	CMPL	AX, $0 // 比较AX值与0</span><br><span class="line">	JE	nocpuinfo  // 如果AX值等于0，表示无CPU信息，则调转到nocpuinfo</span><br><span class="line"></span><br><span class="line">	CMPL	BX, $0x756E6547  // &quot;Genu&quot; </span><br><span class="line">	JNE	notintel             // 如果非intel CPU，则跳转到notintel</span><br><span class="line">	CMPL	DX, $0x49656E69  // &quot;ineI&quot;</span><br><span class="line">	JNE	notintel             // 如果非intel CPU，则跳转到notintel</span><br><span class="line">	CMPL	CX, $0x6C65746E  // &quot;ntel&quot;</span><br><span class="line">	JNE	notintel             // 如果非intel CPU，则跳转到notintel</span><br><span class="line">	MOVB	$1, runtime·isIntel(SB) // 如果是intel CPU，则设置全局变量runtime·isIntel为1</span><br><span class="line"></span><br><span class="line">notintel: // 不展开说明</span><br><span class="line">	// Load EAX=1 cpuid flags</span><br><span class="line">	MOVL	$1, AX</span><br><span class="line">	CPUID</span><br><span class="line">	MOVL	AX, runtime·processorVersionInfo(SB)</span><br><span class="line"></span><br><span class="line">nocpuinfo: </span><br><span class="line">	// if there is an _cgo_init, call it.</span><br><span class="line">	MOVQ	_cgo_init(SB), AX // 将_cgo_init（unsafe.Pointer）存入AX寄存器</span><br><span class="line">	TESTQ	AX, AX // 检测AX值（_cgo_init）是否为空</span><br><span class="line">	JZ	needtls // 如果AX值为0（没有使能cgo），则跳转到needtls</span><br><span class="line">	// arg 1: g0, already in DI</span><br><span class="line">	MOVQ	$setg_gcc&lt;&gt;(SB), SI // arg 2: setg_gcc //将setg_gcc（函数地址）存入SI寄存器</span><br><span class="line">#ifdef GOOS_android // 不展开说明</span><br><span class="line">	MOVQ	$runtime·tls_g(SB), DX 	// arg 3: &amp;tls_g</span><br><span class="line">	// arg 4: TLS base, stored in slot 0 (Android&#x27;s TLS_SLOT_SELF).</span><br><span class="line">	// Compensate for tls_g (+16).</span><br><span class="line">	MOVQ	-16(TLS), CX</span><br><span class="line">#else</span><br><span class="line">	MOVQ	$0, DX	// arg 3, 4: not used when using platform&#x27;s TLS // 将0赋值给DX值</span><br><span class="line">	MOVQ	$0, CX // 将0赋值给CX值</span><br><span class="line">#endif</span><br><span class="line">#ifdef GOOS_windows // 不展开说明</span><br><span class="line">	// Adjust for the Win64 calling convention.</span><br><span class="line">	MOVQ	CX, R9 // arg 4</span><br><span class="line">	MOVQ	DX, R8 // arg 3</span><br><span class="line">	MOVQ	SI, DX // arg 2</span><br><span class="line">	MOVQ	DI, CX // arg 1</span><br><span class="line">#endif</span><br><span class="line">	CALL	AX // 调用AX值表示的函数（_cgo_init指针指向的函数）</span><br><span class="line"></span><br><span class="line">	// update stackguard after _cgo_init</span><br><span class="line">	MOVQ	$runtime·g0(SB), CX         // 将runtime·g0（全局变量）存入CX寄存器</span><br><span class="line">	MOVQ	(g_stack+stack_lo)(CX), AX  // 将runtime·g0.stack.stack_lo存入AX寄存器</span><br><span class="line">	ADDQ	$const__StackGuard, AX      // 将AX值（runtime·g0.stack.stack_lo）+ StackGuard 存入AX寄存器</span><br><span class="line">	MOVQ	AX, g_stackguard0(CX) // 将AX值赋值runtime·g0.stackguard0</span><br><span class="line">	MOVQ	AX, g_stackguard1(CX) // 将AX值赋值runtime·g0.stackguard1</span><br><span class="line"></span><br><span class="line">#ifndef GOOS_windows</span><br><span class="line">	JMP ok // 非Windows平台，跳转到ok处</span><br><span class="line">#endif</span><br><span class="line">needtls:</span><br><span class="line">#ifdef GOOS_plan9 // 不展开</span><br><span class="line">	// skip TLS setup on Plan 9</span><br><span class="line">	JMP ok</span><br><span class="line">#endif</span><br><span class="line">#ifdef GOOS_solaris // 不展开</span><br><span class="line">	// skip TLS setup on Solaris</span><br><span class="line">	JMP ok</span><br><span class="line">#endif</span><br><span class="line">#ifdef GOOS_illumos // 不展开</span><br><span class="line">	// skip TLS setup on illumos</span><br><span class="line">	JMP ok</span><br><span class="line">#endif</span><br><span class="line">#ifdef GOOS_darwin // 不展开</span><br><span class="line">	// skip TLS setup on Darwin</span><br><span class="line">	JMP ok</span><br><span class="line">#endif</span><br><span class="line">#ifdef GOOS_openbsd // 不展开</span><br><span class="line">	// skip TLS setup on OpenBSD</span><br><span class="line">	JMP ok</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">	LEAQ	runtime·m0+m_tls(SB), DI // 将runtime·m0.tls地址保存到DI寄存器</span><br><span class="line">	CALL	runtime·settls(SB)       // 调用runtime·settls函数，将runtime·m0.tls[0]设置成线程TLS</span><br><span class="line"></span><br><span class="line">	// store through it, to make sure it works</span><br><span class="line">	get_tls(BX)                      // 将TLS寄存器值保存到BX寄存器</span><br><span class="line">	MOVQ	$0x123, g(BX)            // 将0x123赋值给BX值指向的地址</span><br><span class="line">	MOVQ	runtime·m0+m_tls(SB), AX // 将runtime·m0.tls[0]值保存到AX</span><br><span class="line">	CMPQ	AX, $0x123               // 比较AX值和0x123是否相等</span><br><span class="line">	JEQ 2(PC)                        // 相等则调到ok</span><br><span class="line">	CALL	runtime·abort(SB)        // 不相等，则调用runtime·abort退出</span><br><span class="line">ok:</span><br><span class="line">	// set the per-goroutine and per-mach &quot;registers&quot;</span><br><span class="line">	get_tls(BX)                      // 将TLS寄存器（-8(FS)）值保存到BX寄存器 </span><br><span class="line">	LEAQ	runtime·g0(SB), CX       // 将runtime·g0的地址保存到CX寄存器</span><br><span class="line">	MOVQ	CX, g(BX)                // 将CX值（runtime·g0的地址）保存到TLS（即runtime·m0.tls[0]）</span><br><span class="line">	LEAQ	runtime·m0(SB), AX       // 将runtime·m0的地址保存到AX寄存器</span><br><span class="line"></span><br><span class="line">	// save m-&gt;g0 = g0</span><br><span class="line">	MOVQ	CX, m_g0(AX)             // 将CX值（runtime·g0的地址）赋值给runtime·m0.g0</span><br><span class="line">	// save m0 to g0-&gt;m</span><br><span class="line">	MOVQ	AX, g_m(CX)              // 将AX值（runtime·m0的地址）赋值给runtime·g0.m</span><br><span class="line"></span><br><span class="line">	CLD				// convention is D is always left cleared</span><br><span class="line"></span><br><span class="line">	// Check GOAMD64 reqirements</span><br><span class="line">	// We need to do this after setting up TLS, so that</span><br><span class="line">	// we can report an error if there is a failure. See issue 49586.</span><br><span class="line">#ifdef NEED_FEATURES_CX // 不展开</span><br><span class="line">	MOVL	$0, AX</span><br><span class="line">	CPUID</span><br><span class="line">	CMPL	AX, $0</span><br><span class="line">	JE	bad_cpu</span><br><span class="line">	MOVL	$1, AX</span><br><span class="line">	CPUID</span><br><span class="line">	ANDL	$NEED_FEATURES_CX, CX</span><br><span class="line">	CMPL	CX, $NEED_FEATURES_CX</span><br><span class="line">	JNE	bad_cpu</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifdef NEED_MAX_CPUID // 不展开</span><br><span class="line">	MOVL	$0x80000000, AX</span><br><span class="line">	CPUID</span><br><span class="line">	CMPL	AX, $NEED_MAX_CPUID</span><br><span class="line">	JL	bad_cpu</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifdef NEED_EXT_FEATURES_BX // 不展开</span><br><span class="line">	MOVL	$7, AX</span><br><span class="line">	MOVL	$0, CX</span><br><span class="line">	CPUID</span><br><span class="line">	ANDL	$NEED_EXT_FEATURES_BX, BX</span><br><span class="line">	CMPL	BX, $NEED_EXT_FEATURES_BX</span><br><span class="line">	JNE	bad_cpu</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifdef NEED_EXT_FEATURES_CX // 不展开</span><br><span class="line">	MOVL	$0x80000001, AX</span><br><span class="line">	CPUID</span><br><span class="line">	ANDL	$NEED_EXT_FEATURES_CX, CX</span><br><span class="line">	CMPL	CX, $NEED_EXT_FEATURES_CX</span><br><span class="line">	JNE	bad_cpu</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">#ifdef NEED_OS_SUPPORT_AX // 不展开</span><br><span class="line">	XORL    CX, CX</span><br><span class="line">	XGETBV</span><br><span class="line">	ANDL	$NEED_OS_SUPPORT_AX, AX</span><br><span class="line">	CMPL	AX, $NEED_OS_SUPPORT_AX</span><br><span class="line">	JNE	bad_cpu</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">	CALL	runtime·check(SB) // 调用runtime·check函数，检查是否一切正常</span><br><span class="line"></span><br><span class="line">	MOVL	24(SP), AX		// 将SP+24值（argc）赋值给AX寄存器</span><br><span class="line">	MOVL	AX, 0(SP)       // 将AX值（argc）保存到SP栈地址上</span><br><span class="line">	MOVQ	32(SP), AX		// 将SP+32值（argv）赋值给AX寄存器</span><br><span class="line">	MOVQ	AX, 8(SP)       // 将AX值（argv）保存到SP+8栈地址上</span><br><span class="line">	CALL	runtime·args(SB)      // 调用runtime·args函数</span><br><span class="line">	CALL	runtime·osinit(SB)    // 调用runtime·osinit函数</span><br><span class="line">	CALL	runtime·schedinit(SB) // 调用runtime·schedinit函数</span><br><span class="line"></span><br><span class="line">	// create a new goroutine to start program</span><br><span class="line">	MOVQ	$runtime·mainPC(SB), AX		// 将runtime·main函数地址赋值给AX寄存器</span><br><span class="line">	PUSHQ	AX                          // 将AX值（runtime·main）压栈</span><br><span class="line">	CALL	runtime·newproc(SB)         // 调用runtime·newproc函数创建协程</span><br><span class="line">	POPQ	AX                          // 将栈顶SP弹出保存到AX寄存器</span><br><span class="line"></span><br><span class="line">	// start this M</span><br><span class="line">	CALL	runtime·mstart(SB)          // 调用mstart，将当前启动线程作为m启动</span><br><span class="line"></span><br><span class="line">	CALL	runtime·abort(SB)	        // 一般情况下mstart不会退出（循环调度g），否则退出进程</span><br><span class="line">	RET</span><br></pre></td></tr></table></figure>
+<p><code>runtime·rt0_go</code>主要完成了如下流程：</p>
+<ol>
+<li>创建并初始化<code>g0</code>栈</li>
+<li>将<code>g0</code>地址保存到线程变量</li>
+<li>相关模块初始化</li>
+<li>创建协程执行<code>runtime·main</code>函数（主协程）</li>
+<li>将当前线程作为<code>m0</code>启动</li>
+</ol>
+<p><code>runtime·main</code>函数实现如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   g := getg()</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Racectx of m0-&gt;g0 is used only as the parent of the main goroutine.</span></span><br><span class="line">   <span class="comment">// It must not be used for anything else.</span></span><br><span class="line">   g.m.g0.racectx = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// Max stack size is 1 GB on 64-bit, 250 MB on 32-bit.</span></span><br><span class="line">   <span class="comment">// Using decimal instead of binary GB and MB because</span></span><br><span class="line">   <span class="comment">// they look nicer in the stack overflow failure message.</span></span><br><span class="line">   <span class="keyword">if</span> goarch.PtrSize == <span class="number">8</span> &#123;</span><br><span class="line">      maxstacksize = <span class="number">1000000000</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      maxstacksize = <span class="number">250000000</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// An upper limit for max stack size. Used to avoid random crashes</span></span><br><span class="line">   <span class="comment">// after calling SetMaxStack and trying to allocate a stack that is too big,</span></span><br><span class="line">   <span class="comment">// since stackalloc works with 32-bit sizes.</span></span><br><span class="line">   maxstackceiling = <span class="number">2</span> * maxstacksize</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Allow newproc to start new Ms.</span></span><br><span class="line">   mainStarted = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> GOARCH != <span class="string">&quot;wasm&quot;</span> &#123; <span class="comment">// no threads on wasm yet, so no sysmon</span></span><br><span class="line">      systemstack(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">         newm(sysmon, <span class="literal">nil</span>, <span class="number">-1</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Lock the main goroutine onto this, the main OS thread,</span></span><br><span class="line">   <span class="comment">// during initialization. Most programs won&#x27;t care, but a few</span></span><br><span class="line">   <span class="comment">// do require certain calls to be made by the main thread.</span></span><br><span class="line">   <span class="comment">// Those can arrange for main.main to run in the main thread</span></span><br><span class="line">   <span class="comment">// by calling runtime.LockOSThread during initialization</span></span><br><span class="line">   <span class="comment">// to preserve the lock.</span></span><br><span class="line">   lockOSThread()</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> g.m != &amp;m0 &#123;</span><br><span class="line">      throw(<span class="string">&quot;runtime.main not on m0&quot;</span>)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Record when the world started.</span></span><br><span class="line">   <span class="comment">// Must be before doInit for tracing init.</span></span><br><span class="line">   runtimeInitTime = nanotime()</span><br><span class="line">   <span class="keyword">if</span> runtimeInitTime == <span class="number">0</span> &#123;</span><br><span class="line">      throw(<span class="string">&quot;nanotime returning zero&quot;</span>)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> debug.inittrace != <span class="number">0</span> &#123;</span><br><span class="line">      inittrace.id = getg().goid</span><br><span class="line">      inittrace.active = <span class="literal">true</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   doInit(&amp;runtime_inittask) <span class="comment">// Must be before defer.</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// Defer unlock so that runtime.Goexit during init does the unlock too.</span></span><br><span class="line">   needUnlock := <span class="literal">true</span></span><br><span class="line">   <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">if</span> needUnlock &#123;</span><br><span class="line">         unlockOSThread()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;()</span><br><span class="line"></span><br><span class="line">   gcenable() <span class="comment">// 使能gc</span></span><br><span class="line"></span><br><span class="line">   main_init_done = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">bool</span>)</span><br><span class="line">   <span class="keyword">if</span> iscgo &#123;</span><br><span class="line">      <span class="keyword">if</span> _cgo_thread_start == <span class="literal">nil</span> &#123;</span><br><span class="line">         throw(<span class="string">&quot;_cgo_thread_start missing&quot;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> GOOS != <span class="string">&quot;windows&quot;</span> &#123;</span><br><span class="line">         <span class="keyword">if</span> _cgo_setenv == <span class="literal">nil</span> &#123;</span><br><span class="line">            throw(<span class="string">&quot;_cgo_setenv missing&quot;</span>)</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> _cgo_unsetenv == <span class="literal">nil</span> &#123;</span><br><span class="line">            throw(<span class="string">&quot;_cgo_unsetenv missing&quot;</span>)</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> _cgo_notify_runtime_init_done == <span class="literal">nil</span> &#123;</span><br><span class="line">         throw(<span class="string">&quot;_cgo_notify_runtime_init_done missing&quot;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// Start the template thread in case we enter Go from</span></span><br><span class="line">      <span class="comment">// a C-created thread and need to create a new thread.</span></span><br><span class="line">      startTemplateThread()</span><br><span class="line">      cgocall(_cgo_notify_runtime_init_done, <span class="literal">nil</span>)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   doInit(&amp;main_inittask)</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Disable init tracing after main init done to avoid overhead</span></span><br><span class="line">   <span class="comment">// of collecting statistics in malloc and newproc</span></span><br><span class="line">   inittrace.active = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">   <span class="built_in">close</span>(main_init_done)</span><br><span class="line"></span><br><span class="line">   needUnlock = <span class="literal">false</span></span><br><span class="line">   unlockOSThread()</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> isarchive || islibrary &#123;</span><br><span class="line">      <span class="comment">// A program compiled with -buildmode=c-archive or c-shared</span></span><br><span class="line">      <span class="comment">// has a main, but it is not executed.</span></span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   fn := main_main <span class="comment">// make an indirect call, as the linker doesn&#x27;t know the address of the main package when laying down the runtime</span></span><br><span class="line">   fn()</span><br><span class="line">   <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">      racefini()</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Make racy client program work: if panicking on</span></span><br><span class="line">   <span class="comment">// another goroutine at the same time as main returns,</span></span><br><span class="line">   <span class="comment">// let the other goroutine finish printing the panic trace.</span></span><br><span class="line">   <span class="comment">// Once it does, it will exit. See issues 3934 and 20018.</span></span><br><span class="line">   <span class="keyword">if</span> atomic.Load(&amp;runningPanicDefers) != <span class="number">0</span> &#123;</span><br><span class="line">      <span class="comment">// Running deferred functions should not take long.</span></span><br><span class="line">      <span class="keyword">for</span> c := <span class="number">0</span>; c &lt; <span class="number">1000</span>; c++ &#123;</span><br><span class="line">         <span class="keyword">if</span> atomic.Load(&amp;runningPanicDefers) == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">         &#125;</span><br><span class="line">         Gosched()</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> atomic.Load(&amp;panicking) != <span class="number">0</span> &#123;</span><br><span class="line">      gopark(<span class="literal">nil</span>, <span class="literal">nil</span>, waitReasonPanicWait, traceEvGoStop, <span class="number">1</span>)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   exit(<span class="number">0</span>)</span><br><span class="line">   <span class="keyword">for</span> &#123;</span><br><span class="line">      <span class="keyword">var</span> x *<span class="type">int32</span></span><br><span class="line">      *x = <span class="number">0</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fn := main_main </span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+<p>将执行用户定义的main函数。</p>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-05-19</div>
+    </div>
+  </div>
+
+  
+
+  <div class="divider"></div>
+</div>
+  
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
