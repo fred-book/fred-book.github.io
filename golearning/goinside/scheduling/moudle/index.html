@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">Home</a></li>
 <li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
 </ul>
-<h1 id="深入浅出Go语言">深入浅出Go语言</h1>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
 <ul>
 <li><a href="/golearning/introduction">引言</a></li>
 <li>上篇.深入Go语言
@@ -312,7 +312,7 @@ function sidebar_toggle() {
 <h5 id="循环调度">循环调度</h5>
 <p>m在循环调度过程中，调度优先级冲高到低为：绑定的p的runnext，绑定的p的本地可运行队列队首的g，全局可运行队列队首的g，网络监控器（netpoll）中当前处于就绪状态的g，其它p的本地可运行队列中的g，gc状态下的gc worker的g。如果选择到合适的g，则调用<code>execute()</code>执行该协程，否则休眠当前的p和m。</p>
 <p>当调度的g执行完成后，m再次调用schedule()调度下一个g，如此循环调度。</p>
-<h5 id="创建协程">创建协程</h5>
+<h5 id="创建协程-v2">创建协程</h5>
 <p>在<code>main</code>函数启动执行后，如果使用<code>go</code>创建协程时，默认情况（非随机调度）下，新建的协程会被设置成当前执行goroutine的m所绑定的p的runnext，等待优先调度，并将旧的runnext的goroutine放到本地可运行队列的尾部。如果是随机调度，新建的goroutine将随机放到本地可运行队列的尾部或者被设置成runnext。</p>
 <p>当p的本地可运行队列满（装载的g达到256个），则将本地可运行队列中一般的g搬移到全局可运行队列。</p>
 <p>接下来唤醒p，唤醒p的过程中，如果sched上没有空闲的p，则不做任何处理，否则调用starm()启动m。在starm()函数中，优先唤醒处于休眠状态的m，如果不存在休眠的m，则新建m。唤醒或者新建的m再次进入循环调度状态。</p>
@@ -370,7 +370,7 @@ function sidebar_toggle() {
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <span>
       <span class="busuanzi_counter_icon">
-        <i class="{{ theme.busuanzi_count.total_visitors_icon }}"></i>
+        <i class="fa fa-user"></i>
       </span>
       <span class="site-uv" title="Visitors">
         <span id="busuanzi_value_site_uv"></span>
@@ -378,7 +378,7 @@ function sidebar_toggle() {
     </span>
     <span>
       <span class="busuanzi_counter_icon">
-        <i class="{{ theme.busuanzi_count.total_views_icon }}"></i>
+        <i class="fa fa-eye"></i>
       </span>
       <span class="site-pv" title="Viewers">
         <span id="busuanzi_value_site_pv"></span>
