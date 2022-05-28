@@ -369,15 +369,15 @@ img {
         opacity: 0;
         max-height: 0;
         transition: max-height 0.15s ease-out; }
-    .off-canvas-content .book-post-info .busuanzi-counter .busuanzi_counter_item {
+    .off-canvas-content .book-post-info .busuanzi-count .busuanzi_count_item {
       content: '|';
       margin: 0 .5em;
       display: none; }
-    .off-canvas-content .book-post-info .busuanzi-counter .busuanzi_counter_icon {
+    .off-canvas-content .book-post-info .busuanzi-count .busuanzi_count_icon {
       margin-right: 3px; }
-    .off-canvas-content .book-post-info .busuanzi-counter #busuanzi_counter_site_uv {
+    .off-canvas-content .book-post-info .busuanzi-count #busuanzi_count_site_uv {
       display: none; }
-    .off-canvas-content .book-post-info .busuanzi-counter #busuanzi_counter_site_pv {
+    .off-canvas-content .book-post-info .busuanzi-count #busuanzi_count_site_pv {
       display: none; }
     .off-canvas-content .book-post-info .book-tocbot {
       overflow: auto;
