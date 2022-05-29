@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">Home</a></li>
 <li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
 </ul>
-<h1 id="深入浅出Go语言">深入浅出Go语言</h1>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
 <ul>
 <li><a href="/golearning/introduction">引言</a></li>
 <li>上篇.深入Go语言
@@ -100,6 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </li>
 <li>
 <p>第四章 内存管理</p>
+<ul>
+<li><a href="/golearning/goinside/memory/abstract">4.1 概述</a></li>
+<li><a href="/golearning/goinside/memory/memory">4.2 进程启动</a></li>
+</ul>
 </li>
 </ul>
 </li>
@@ -260,7 +264,7 @@ This symbol is local to the dynamic shared object.</li>
 <p>funcname为函数名，与包名之间用Unicode的中点连接。</p>
 <p>framesize为栈帧大小</p>
 <p>argumentssize为入参元素总大小</p>
-<h4 id="代码分析">代码分析</h4>
+<h4 id="代码分析-v2">代码分析</h4>
 <p>在学习完上述基础知识后，再回到节首的汇编代码就比较容易理解了。这里只解释字面意思，其中原理在下一节介绍。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0000 00000 (math.go:4)        TEXT    &quot;&quot;.add(SB), NOSPLIT|ABIInternal, $16-16</span><br></pre></td></tr></table></figure>
 <p>声明函数add，其中pkgname用“”代替，在链接时将替换成math包名。函数栈帧大小为16字节，参数大小为16字节（2个int大小）</p>
