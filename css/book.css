@@ -379,6 +379,10 @@ img {
       display: none; }
     .off-canvas-content .book-post-info .busuanzi-count #busuanzi_count_site_pv {
       display: none; }
+    .off-canvas-content .book-post-info .busuanzi-count.hide {
+      opacity: 0;
+      max-height: 0;
+      transition: max-height 0.15s ease-out; }
     .off-canvas-content .book-post-info .book-tocbot {
       overflow: auto;
       position: relative;

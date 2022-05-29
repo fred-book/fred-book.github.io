@@ -183,7 +183,7 @@ function sidebar_toggle() {
 <p>栈帧的创建和释放过程如下伪汇编代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TEXT funcb, , $framesize-argumentsize</span><br><span class="line">    SUBQ $framesize, SP //将SP减去栈帧大小，即开辟栈帧</span><br><span class="line">    MOVQ BP, $framesize-8(SP)//将调用函数的BP地址保存到Caller BP栈地址上</span><br><span class="line">    LEAQ $framesize-8(SP), BP//将当前栈基地址SP+framesize-8存入BP寄存器</span><br><span class="line">    ...</span><br><span class="line">    CALL .funca //调用函数funca，将SP减去8，并向栈中压入下一条指令地址即Return Address</span><br><span class="line">    ...</span><br><span class="line">    MOVQ $framesize-8(SP), BP//将SP+framesize-8保存的Caller BP存入BP寄存器</span><br><span class="line">    ADDQ $framesize, SP //将SP加栈帧大小，即释放栈帧</span><br><span class="line">    RET//返回函数，将栈顶保存的返回地址弹出到IP寄存器，并将SP加8，释放Return Address</span><br></pre></td></tr></table></figure>
 <p>每个函数都遵循以上的栈处理过程，其中省略部分为函数体执行过程中，其中涉及栈空间存取过程。</p>
-<h4 id="代码分析">代码分析</h4>
+<h4 id="代码分析-v2">代码分析</h4>
 <p>下面以一个简单的函数调用关系来说明栈空间的处理过程，源代码如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> math</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:nosplit</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//go:nosplit</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">calc</span><span class="params">(a, b <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	c := add(a, b)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通过编译生成汇编代码如下：</p>
@@ -300,13 +300,13 @@ function sidebar_toggle() {
       <div>2022-05-03</div>
     </div>
   </div>
-
+  
   
 
   <div class="divider"></div>
 </div>
   
-  <div class="busuanzi-counter">
+  <div class="busuanzi-count">
   <div>
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
