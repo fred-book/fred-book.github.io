@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://fred.com/golearning/goinside/memory/gc/</loc>
+    
+    <lastmod>2022-06-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://fred.com/golearning/goinside/memory/sumary/</loc>
+    
+    <lastmod>2022-06-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://fred.com/golearning/goinside/memory/allocation/</loc>
+    
+    <lastmod>2022-06-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://fred.com/menu.html</loc>
     
     <lastmod>2022-05-29</lastmod>
@@ -218,7 +245,7 @@
   </url>
   
   <url>
-    <loc>http://fred.com/golearning/goinside/gc/%E6%A6%82%E8%BF%B0/</loc>
+    <loc>http://fred.com/golearning/goinside/interface/%E6%A6%82%E8%BF%B0/</loc>
     
     <lastmod>2022-05-03</lastmod>
     
@@ -227,7 +254,7 @@
   </url>
   
   <url>
-    <loc>http://fred.com/golearning/goinside/interface/%E6%A6%82%E8%BF%B0/</loc>
+    <loc>http://fred.com/golearning/goinside/gc/%E6%A6%82%E8%BF%B0/</loc>
     
     <lastmod>2022-05-03</lastmod>
     
@@ -238,7 +265,7 @@
 
   <url>
     <loc>http://fred.com/</loc>
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -248,7 +275,7 @@
   
   <url>
     <loc>http://fred.com/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/</loc>
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="s-8IF8tA8PvTbm8zqPM7lsTYTh9cNli__Ow9DNcriYc" />
+    <meta name="baidu-site-verification" content="code-XuUFITwPa7" />
+    <meta name="msvalidate.01" content="89FF12DB155A91466B832D8311C1E0EB" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summary">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+<li><a href="/golearning/goinside/scheduling/newproc">2.4 创建协程</a></li>
+<li><a href="/golearning/goinside/scheduling/schedule">2.5 循环调度</a></li>
+<li><a href="/golearning/goinside/scheduling/sysmon">2.6 系统监控</a></li>
+<li><a href="/golearning/goinside/scheduling/summary">2.7 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第三章 进程启动</p>
+<ul>
+<li><a href="/golearning/goinside/startup/abstract">3.1 概述</a></li>
+<li><a href="/golearning/goinside/startup/startup">3.2 进程启动</a></li>
+<li><a href="/golearning/goinside/startup/tls">3.3 线程本地存储</a></li>
+<li><a href="/golearning/goinside/startup/param">3.4 入参传递</a></li>
+<li><a href="/golearning/goinside/startup/summary">3.5 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第四章 内存管理</p>
+<ul>
+<li><a href="/golearning/goinside/memory/abstract">4.1 概述</a></li>
+<li><a href="/golearning/goinside/memory/memory">4.2 内存管理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="垃圾回收">垃圾回收</h3>
+<hr>
+<p>如果一种编程语言，使用者不需要考虑对象的释放，则需要一种机制自动进行对象的回收，这一过程称为垃圾回收（Garbage Collection，简称GC）。垃圾回收能够及时的将不使用的内存归还给操作系统，从而达到循环使用内存的效果。垃圾回收有2类主流的实现机制：</p>
+<p>引用计数法：每个对象有一个引用计数器，当对象增加一个引用者，计数器加1，引用者释放应用，则计数器减1，当计数器减为0时，释放对象。</p>
+<p>可达性分析法：从根对象开始，通过对象的引用关系遍历所有的对象，当对象可触达则说明对象正在被使用，否则对象处于无对象引用，则回收。</p>
+<p>引用计数法无法解决循环依赖的问题，所以基本上所有的主流开发语言都使用可达性分析法实现GC。其中最常用的是三色标记法，包括Java，Go等语言都使用这种方式。</p>
+<h4 id="三色标记法">三色标记法</h4>
+<p>三色标记法是指用三种颜色标记不同状态的对象，通过遍历所有对象筛选出不在使用的对象。三种颜色定义如下：</p>
+<ul>
+<li>白色：初始值，所有对象初始颜色都是白色，如果一次遍历完，对象颜色还是白色，则该认为对象不可达。</li>
+<li>灰色：中间状态，该对象被其它对象引用，但该对象引用的对象尚未检测完。</li>
+<li>黑色：该对象被其它对象引用，且其引用的对象也完成检测。</li>
+</ul>
+<p><img src="/assets/images/golearing/image-20220603172437465.gif" alt="image-20220603172437465"></p>
+<p>如上图所示，三色标记法的步骤如下：</p>
+<ol>
+<li>创建白，灰，黑三个集合</li>
+<li>将所有对象置于白色集合中</li>
+<li>从根节点开始遍历，将引用的对象设置成灰色，并放置灰色集合中</li>
+<li>遍历灰色集合中的节点，将节点设置成黑色，并放置黑色集合中，同时将其引用节点标记成灰色，并放置灰色集合中</li>
+<li>重复4直到灰色集合中无节点</li>
+<li>白色集合中剩余的节点则为未被引用节点，可回收</li>
+</ol>
+<p>三色标记法看似完美，但仍存在缺陷导致多标记和漏标记。</p>
+<p>多标记</p>
+<p><img src="/assets/images/golearing/image-20220603181247692.png" alt="image-20220603181247692"></p>
+<p>如上图所示，在扫描C对象前，C解除引用E对象但B对象引用E对象，按照三色标记法，E对象会被认为无对象引用，可以回收。但是实际上B引用E对象，不应该被回收，E对象被多标记。</p>
+<p>漏标记</p>
+<p><img src="/assets/images/golearing/image-20220603181258691.png" alt="image-20220603181258691"></p>
+<p>如上图所示，当扫描C对象前，B解除引用C，按照三色标记法，接下来C，E对象会被设置成黑色，不会被回收。但是实际上C对象无对象引用，C，E对象都可以回收，则C，E对象被漏标记。</p>
+<p>对于漏标场景，在下一个GC周期会继续将对象回收掉，是可以接受的。但是对于多标记，则会直接导致数据被误删，程序异常，是不可接受的。</p>
+<p>为了避免多标记问题，一般采用写屏障机制来实现，写屏障即在操作数据前做些特殊操作避免标记异常。写屏障遵循以下两种原则之一：</p>
+<ul>
+<li>强三色不变式：强制性的不允许黑色对象引用白色对象</li>
+<li>弱三色不变式：黑色对象可以引用白色对象，但白色对象存在其它灰色对象对他的引用，或者可达它的链路上游存在灰色对象</li>
+</ul>
+<p>对应于上述两种原则的写屏障分别称为插入写屏障和删除写屏障。插入写屏障是指对象A引用对象B时，如果对象A被设置成黑色，则设置B对象为灰色；删除写屏障是指对象A解除引用对象B时，设置对象B为灰色。两种方式都可以解决上述的多标记场景。</p>
+<p>在Golang 1.8版本后，引入了混合写屏障机制解决多标记场景，其遵循如下原则：</p>
+<ol>
+<li>GC 开始则将栈上的对象全部标记为黑色</li>
+<li>GC期间，任何创建新对象均置为黑色；被删除指针对象标记为灰色；被添加指针对象标记为灰色</li>
+</ol>
+<h4 id="GC过程">GC过程</h4>
+<p>Golang的垃圾回收实现过程如下：</p>
+<ol>
+<li>
+<p><strong>GC执行清扫终止（sweep termination）</strong></p>
+<p>a. 停止世界（Stop The World， STW），这回让所有的P达到GC安全点</p>
+<p>b. 清扫所有未清扫过的span（将不使用对象释放），只有在强制GC的情况下才允许有未清扫span存在</p>
+</li>
+<li>
+<p><strong>GC 执行标记阶段（mark）</strong></p>
+<p>a. 执行标记准备：设置GC阶段为_GCmark，使能写屏障，使能存取辅助，将GC Root入队。在所有的P都使能写屏障后才启动扫描对象。</p>
+<p>b. 启动世界（Start The World）。至此，GC标记工作协程由调度器启动，申请内存时执行存储协助，写屏障同时标记被删除指针对象和新添加的指针对象为灰色。新申请对象则立即被置为黑色。</p>
+<p>c. GC执行根标记工作，扫描所有的栈，着色所有全局变量，着色所有堆指针，扫描栈将停止协程工作，并着色栈上所有指针，处理完后重新启动协程。</p>
+<p>d. GC依次取出灰色对象队列中的对象，并逐个置为黑色，并将对象中指向的指针置为灰色（将这些指针添加到灰色对象队列中）。</p>
+<p>e. 由于GC是多任务的，所以GC使用了一种分布式终止算法来检测所有的根标记任务和灰色兑现都扫描完成。如果都已经扫描完成，GC将进入标记终止状态。</p>
+</li>
+<li>
+<p><strong>GC 执行标记终止（mark termination）</strong></p>
+<p>a. 停止世界（Stop The World，STW）。</p>
+<p>b. 设置GC为_GCmarktermination阶段，停止GC标记工作协程和存取协助。</p>
+<p>c. 执行整理事务如清理mcache。</p>
+</li>
+<li>
+<p><strong>GC 执行清扫阶段（sweep）</strong></p>
+<p>a. 设置GC为_GCoff阶段，设置清扫状态，并且停止写屏障。</p>
+<p>b. 启动世界（Start The World），至此，新申请的对象将置为白色，同时，必要情况下，申请内存将触发先清扫span后使用内存。</p>
+<p>c. GC在后台或者在申请内存过程中并行（不影响正常的协程运行）清扫span（将不使用对象释放）。</p>
+</li>
+</ol>
+<p>GC过程如上所述，每一轮GC都依次执行上述4个步骤完成GC。仔细理解上述步骤，不免有会有如下疑问：</p>
+<ol>
+<li>如何识别GC根对象？</li>
+<li>如何识别对象中引用的指针对象？</li>
+<li>GC的触发条件是什么？</li>
+</ol>
+<p>在解释上述问题前，希望我们能达成一个共识：GC的对象堆（heap）上申请的内存，堆上内存都由span管理。</p>
+<h5 id="GC根对象">GC根对象</h5>
+<h5 id="引用指针对象">引用指针对象</h5>
+<h5 id="GC触发条件">GC触发条件</h5>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-06-06</div>
+    </div>
+  </div>
+  
+  
+
+  <div class="divider"></div>
+</div>
+  
+  <div class="busuanzi-count">
+  <div>
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <span>
+      <span>
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span>
+      <span>
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="page-pv" title="Viewers">
+        <span id="busuanzi_value_page_pv"></span>
+      </span>
+    </span>
+  <div>
+  <div class="divider"></div>
+</div>
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>

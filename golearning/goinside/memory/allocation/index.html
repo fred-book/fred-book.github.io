@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="s-8IF8tA8PvTbm8zqPM7lsTYTh9cNli__Ow9DNcriYc" />
+    <meta name="baidu-site-verification" content="code-XuUFITwPa7" />
+    <meta name="msvalidate.01" content="89FF12DB155A91466B832D8311C1E0EB" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+    
+      <link rel="icon" href="/favicon.png" />
+    
+
+    <title>
+        
+          Fred&#39;s Book
+        
+    </title>
+
+    <!-- Spectre.css framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.9/spectre-icons.min.css">
+
+    <!-- theme css & js -->
+    
+<link rel="stylesheet" href="/css/book.css">
+
+    
+<script src="/js/book.js"></script>
+
+
+    <!-- tocbot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+    
+    <!-- katex -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zooming/2.1.1/zooming.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zooming = new Zooming()
+    zooming.listen('.book-content img')
+})
+</script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+
+<div class="book-container">
+  <div class="book-sidebar">
+    <div class="book-brand">
+  <a href="/">
+    <img src="/favicon.png">
+    <span>FRED&#39;S BOOK</span>
+  </a>
+</div>
+    <div id="menu" class="book-menu hide">
+  <ul>
+<li><a href="/">Home</a></li>
+<li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
+</ul>
+<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<ul>
+<li><a href="/golearning/introduction">引言</a></li>
+<li>上篇.深入Go语言
+<ul>
+<li>
+<p>第一章 汇编基础</p>
+<ul>
+<li><a href="/golearning/goinside/assembly/abstract">1.1 概述</a></li>
+<li><a href="/golearning/goinside/assembly/base">1.2 基础知识</a></li>
+<li><a href="/golearning/goinside/assembly/stack">1.3 调用栈</a></li>
+<li><a href="/golearning/goinside/assembly/summary">1.4 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第二章 调度模型</p>
+<ul>
+<li><a href="/golearning/goinside/scheduling/abstract">2.1 概述</a></li>
+<li><a href="/golearning/goinside/scheduling/coroutine">2.2 协程</a></li>
+<li><a href="/golearning/goinside/scheduling/moudle">2.3 调度模型</a></li>
+<li><a href="/golearning/goinside/scheduling/newproc">2.4 创建协程</a></li>
+<li><a href="/golearning/goinside/scheduling/schedule">2.5 循环调度</a></li>
+<li><a href="/golearning/goinside/scheduling/sysmon">2.6 系统监控</a></li>
+<li><a href="/golearning/goinside/scheduling/summary">2.7 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第三章 进程启动</p>
+<ul>
+<li><a href="/golearning/goinside/startup/abstract">3.1 概述</a></li>
+<li><a href="/golearning/goinside/startup/startup">3.2 进程启动</a></li>
+<li><a href="/golearning/goinside/startup/tls">3.3 线程本地存储</a></li>
+<li><a href="/golearning/goinside/startup/param">3.4 入参传递</a></li>
+<li><a href="/golearning/goinside/startup/summary">3.5 小结</a></li>
+</ul>
+</li>
+<li>
+<p>第四章 内存管理</p>
+<ul>
+<li><a href="/golearning/goinside/memory/abstract">4.1 概述</a></li>
+<li><a href="/golearning/goinside/memory/memory">4.2 内存管理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<script src="/js/book-menu.js"></script>
+
+  </div>
+
+  <div class="sidebar-toggle" onclick="sidebar_toggle()" onmouseover="add_inner()" onmouseleave="remove_inner()">
+  <div class="sidebar-toggle-inner"></div>
+</div>
+
+<script>
+function add_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.add('show')  
+}
+
+function remove_inner() {
+  let inner = document.querySelector('.sidebar-toggle-inner')
+  inner.classList.remove('show')
+}
+
+function sidebar_toggle() {
+    let sidebar_toggle = document.querySelector('.sidebar-toggle')
+    let sidebar = document.querySelector('.book-sidebar')
+    let content = document.querySelector('.off-canvas-content')
+    if (sidebar_toggle.classList.contains('extend')) { // show
+        sidebar_toggle.classList.remove('extend')
+        sidebar.classList.remove('hide')
+        content.classList.remove('extend')
+    }
+    else { // hide
+        sidebar_toggle.classList.add('extend')
+        sidebar.classList.add('hide')
+        content.classList.add('extend')
+    }
+}
+</script>
+
+  <div class="off-canvas-content">
+    <div class="columns">
+      <div class="column col-10 col-lg-12">
+        <div class="book-navbar">
+          <!-- For Responsive Layout -->
+
+<header class="navbar">
+  <section class="navbar-section">
+    <a onclick="open_sidebar()">
+      <i class="icon icon-menu"></i>
+    </a>
+  </section>
+</header>
+
+        </div>
+        <div class="book-content">
+          <div class="book-post">
+  <h3 id="内存申请">内存申请</h3>
+<hr>
+<h4 id="申请对象">申请对象</h4>
+<p>在Golang中，对于使用者来说，面对的是对象object。在创建对象的时候Golang会为对象申请内存，并进行赋初值。创建对象包含创建单个对象和对象数组，其函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newobject</span><span class="params">(typ *_type)</span></span> unsafe.Pointer &#123;</span><br><span class="line">   <span class="keyword">return</span> mallocgc(typ.size, typ, <span class="literal">true</span>) <span class="comment">// 为typ类型的对象申请内存空间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newarray</span><span class="params">(typ *_type, n <span class="type">int</span>)</span></span> unsafe.Pointer &#123;</span><br><span class="line">   <span class="keyword">if</span> n == <span class="number">1</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> mallocgc(typ.size, typ, <span class="literal">true</span>) <span class="comment">// 如果数组长度为1，则直接申请typ类型的内存空间</span></span><br><span class="line">   &#125;</span><br><span class="line">   mem, overflow := math.MulUintptr(typ.size, <span class="type">uintptr</span>(n))</span><br><span class="line">   <span class="keyword">if</span> overflow || mem &gt; maxAlloc || n &lt; <span class="number">0</span> &#123;</span><br><span class="line">      <span class="built_in">panic</span>(plainError(<span class="string">&quot;runtime: allocation size out of range&quot;</span>))</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> mallocgc(mem, typ, <span class="literal">true</span>) <span class="comment">// 如果数组长度大于1，则直接申请n个typ类型的内存空间</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上述代码可以看出，两个函数最终都是调用内存分配函数<code>mallocgc</code>。<code>mallocgc</code>函数主要实现了对极小对象，一般对象和大对象的内存申请。</p>
+<h5 id="申请极小对象">申请极小对象</h5>
+<p>极小对象是指长度小于16字节的对象，对于这一类对象，会从<code>mcache</code>的<code>tiny</code>为其申请内存。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> noscan &amp;&amp; size &lt; maxTinySize &#123;</span><br><span class="line">    off := c.tinyoffset<span class="comment">//获取当前tiny已经被使用的内存偏移，并按照合适长度对齐</span></span><br><span class="line">    <span class="keyword">if</span> size&amp;<span class="number">7</span> == <span class="number">0</span> &#123;</span><br><span class="line">        off = alignUp(off, <span class="number">8</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> goarch.PtrSize == <span class="number">4</span> &amp;&amp; size == <span class="number">12</span> &#123;</span><br><span class="line">        off = alignUp(off, <span class="number">8</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> size&amp;<span class="number">3</span> == <span class="number">0</span> &#123;</span><br><span class="line">        off = alignUp(off, <span class="number">4</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> size&amp;<span class="number">1</span> == <span class="number">0</span> &#123;</span><br><span class="line">        off = alignUp(off, <span class="number">2</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> off+size &lt;= maxTinySize &amp;&amp; c.tiny != <span class="number">0</span> &#123;<span class="comment">// 如果tiny剩余长度足够分配申请长度，则返回对应地址，更新tiny使用偏移</span></span><br><span class="line">        <span class="comment">// The object fits into existing tiny block.</span></span><br><span class="line">        x = unsafe.Pointer(c.tiny + off)</span><br><span class="line">        c.tinyoffset = off + size</span><br><span class="line">        c.tinyAllocs++</span><br><span class="line">        mp.mallocing = <span class="number">0</span></span><br><span class="line">        releasem(mp)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 从规格2的mspan中申请一个新的object</span></span><br><span class="line">    span = c.alloc[tinySpanClass]</span><br><span class="line">    v := nextFreeFast(span)</span><br><span class="line">    <span class="keyword">if</span> v == <span class="number">0</span> &#123;</span><br><span class="line">        v, span, shouldhelpgc = c.nextFree(tinySpanClass)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将新申请的16字节对象清零</span></span><br><span class="line">    x = unsafe.Pointer(v)</span><br><span class="line">    (*[<span class="number">2</span>]<span class="type">uint64</span>)(x)[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">    (*[<span class="number">2</span>]<span class="type">uint64</span>)(x)[<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 如果申请内存size小于已被使用内存偏移或者tiny对象为空；否则退化成一般对象申请</span></span><br><span class="line">    <span class="keyword">if</span> !raceenabled &amp;&amp; (size &lt; c.tinyoffset || c.tiny == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// Note: disabled when race detector is on, see comment near end of this function.</span></span><br><span class="line">        c.tiny = <span class="type">uintptr</span>(x)</span><br><span class="line">        c.tinyoffset = size</span><br><span class="line">    &#125;</span><br><span class="line">    size = maxTinySize</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中可以看出，Golang非常精细化使用tiny为极小非扫描对象申请内存，有效提升内存使用率。同时，tiny内存块也是从规格为2的mspan中申请的object。</p>
+<h5 id="申请一般对象">申请一般对象</h5>
+<p>对于需要扫描的极小对象和长度不小于16字节且小于32768字节的对象，则通过一般对象申请流程申请内存。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sizeclass <span class="type">uint8</span></span><br><span class="line"><span class="keyword">if</span> size &lt;= smallSizeMax<span class="number">-8</span> &#123; <span class="comment">// 获取申请内存长度所属规格</span></span><br><span class="line">    sizeclass = size_to_class8[divRoundUp(size, smallSizeDiv)]</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sizeclass = size_to_class128[divRoundUp(size-smallSizeMax, largeSizeDiv)]</span><br><span class="line">&#125;</span><br><span class="line">size = <span class="type">uintptr</span>(class_to_size[sizeclass])</span><br><span class="line">spc := makeSpanClass(sizeclass, noscan) <span class="comment">// 根据内存规格和是否扫描获取mspan规格</span></span><br><span class="line">span = c.alloc[spc] <span class="comment">// 从mspan中获取object，如果本地的mspan已满，则向mheap重新申请一个mspan</span></span><br><span class="line">v := nextFreeFast(span)</span><br><span class="line"><span class="keyword">if</span> v == <span class="number">0</span> &#123;</span><br><span class="line">    v, span, shouldhelpgc = c.nextFree(spc)</span><br><span class="line">&#125;</span><br><span class="line">x = unsafe.Pointer(v)</span><br><span class="line"><span class="keyword">if</span> needzero &amp;&amp; span.needzero != <span class="number">0</span> &#123;</span><br><span class="line">    memclrNoHeapPointers(unsafe.Pointer(v), size) <span class="comment">// 将申请的内存清零</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="申请大对象">申请大对象</h5>
+<p>对于内存长度小于32768字节的对象，认为是大对象，直接从mheap申请内存。大对象长度大于32768字节，超过了前一节讲到的mspan规格，但是管理上仍以mspan对象管理，挂载在规格为1的mspan对象下。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">shouldhelpgc = <span class="literal">true</span></span><br><span class="line"><span class="comment">// For large allocations, keep track of zeroed state so that</span></span><br><span class="line"><span class="comment">// bulk zeroing can be happen later in a preemptible context.</span></span><br><span class="line">span = c.allocLarge(size, noscan) <span class="comment">// 申请大对象，仍然按照mspan对象管理，挂载在规格为1的mspan对象上</span></span><br><span class="line">span.freeindex = <span class="number">1</span></span><br><span class="line">span.allocCount = <span class="number">1</span></span><br><span class="line">size = span.elemsize</span><br><span class="line">x = unsafe.Pointer(span.base())</span><br><span class="line"><span class="keyword">if</span> needzero &amp;&amp; span.needzero != <span class="number">0</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> noscan &#123;</span><br><span class="line">        delayedZeroing = <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        memclrNoHeapPointers(x, size)</span><br><span class="line">        <span class="comment">// We&#x27;ve in theory cleared almost the whole span here,</span></span><br><span class="line">        <span class="comment">// and could take the extra step of actually clearing</span></span><br><span class="line">        <span class="comment">// the whole thing. However, don&#x27;t. Any GC bits for the</span></span><br><span class="line">        <span class="comment">// uncleared parts will be zero, and it&#x27;s just going to</span></span><br><span class="line">        <span class="comment">// be needzero = 1 once freed anyway.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
+
+
+  <div class="book-comments">
+    
+
+
+
+
+  </div>
+
+
+
+<script src="/js/book-post.js"></script>
+
+        </div>
+      </div>
+      <div class="column col-2 hide-lg">
+        <div class="book-post-info">
+  
+    <div class="book-post-meta">
+
+  <div class="author">
+
+    <!-- Author image -->
+    <div class="author-img">
+      
+        <figure
+          class="avatar avatar-lg"
+          data-initial="F"
+          style="background-color: #3b4351;">
+        </figure>
+      
+    </div>
+
+    <!-- Author title -->
+    <div class="author-title">
+      <div>Fred</div>
+      <div>2022-06-06</div>
+    </div>
+  </div>
+  
+  
+
+  <div class="divider"></div>
+</div>
+  
+  <div class="busuanzi-count">
+  <div>
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <span>
+      <span>
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span>
+      <span>
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="page-pv" title="Viewers">
+        <span id="busuanzi_value_page_pv"></span>
+      </span>
+    </span>
+  <div>
+  <div class="divider"></div>
+</div>
+
+  <div class="book-tocbot">
+</div>
+<!-- <div class="book-tocbot-menu">
+  <a class="book-toc-expand" onclick="expand_toc()">Expand all</a>
+  <a onclick="go_top()">Back to top</a>
+  <a onclick="go_bottom()">Go to bottom</a>
+</div> -->
+
+
+<script src="/js/book-toc.js"></script>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <a class="off-canvas-overlay" onclick="hide_canvas()"></a>
+</div>
+
+</body>
+</html>
+
+
+<script src="/js/book.js"></script>
