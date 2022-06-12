@@ -226,7 +226,7 @@ function sidebar_toggle() {
 <blockquote>
 <p>一个arena对应的地址为64M，一个内存页的大小为8K，所以spans大小为64M/8K=8K。</p>
 </blockquote>
-<p><img src="/assets/images/golearing/image-20220612111858828.png" alt="image-20220612111858828"></p>
+<p><img src="/assets/images/golearing/image-20220612213107254.png" alt="image-20220612213107254"></p>
 <p>在GC标记过程中，由对象指针，通过arena的bitmap可以快速扫描该对象下指针引用，并通过spans快速找到对象所属mspan，并标记其对应的gcmarkBits（实现过程在垃圾回收章节详细描述）</p>
 
 </div>
