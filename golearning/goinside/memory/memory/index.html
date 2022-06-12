@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <ul>
 <li><a href="/golearning/goinside/memory/abstract">4.1 概述</a></li>
 <li><a href="/golearning/goinside/memory/memory">4.2 内存管理</a></li>
-<li><a href="/golearning/goinside/memory/allocation">4.3 内存申请</a></li>
+<li><a href="/golearning/goinside/memory/newobject">4.3 创建对象</a></li>
 <li><a href="/golearning/goinside/memory/gc">4.4 垃圾回收</a></li>
 <li><a href="/golearning/goinside/memory/summary">4.5 小结</a></li>
 </ul>
@@ -174,11 +174,11 @@ function sidebar_toggle() {
   <h3 id="内存管理">内存管理</h3>
 <hr>
 <p>Golang提供内存管理功能，开发者不需要关系内存的申请和释放，这样为使用者带来极大的便利。</p>
-<p><img src="/assets/images/golearing/image-20220529161127319.png" alt="image-20220529161127319"></p>
+<p><img src="C:%5CUsers%5Czgchu%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220529161127319.png" alt="image-20220529161127319"></p>
 <p>Golang提供两级内存管理机制，第一级为p级内存管理mcache，第二级为全局内存管理mheap。</p>
 <h4 id="mcache">mcache</h4>
 <p>每个p都有一个独立的mcache，为该p单独提供内存管理。这样就可以降低p间的竞争，提高内存并发申请效率。mcache主要维护2个对象：</p>
-<p>tiny：为长度小于16字节的对象分配内存。tiny本身为16字节长度的内存块，在分配内存时，更新已经分配内存的偏移量。</p>
+<p>tiny：为长度小于16字节且非扫描（不含指针）对象分配内存。tiny本身为16字节长度的内存块，在分配内存时，更新已经分配内存的偏移量。</p>
 <p>alloc：保存不同大小规格的mspan对象（下文具体介绍），每种规格只有一个mspan对象，为长度小于32768字节的对象分配内存。其中tiny也是从alloc[1]的mspan中申请的object，对于大于16字节而小于32768字节的对象则直接从对应规格的alloc中的mspan中申请object。</p>
 <p>当mcache中的mspan无可用的空间，则向mheap申请新的mspan，具体在下一节中描述。</p>
 <h4 id="mheap">mheap</h4>
@@ -199,12 +199,35 @@ function sidebar_toggle() {
 <p>objects：一个span下objects个数为256=8192/32。</p>
 <p>tail waste：span连续分配object后，不足分配1个object的剩余空间大小。因为8192字节的内存能完成分配256个32字节的object，不存在剩余空间，所以tail waste为0。</p>
 <p>max waste：申请规格4的对象最小内存长度为25字节（小于25字节则申请3及以下规格mspan），如果每个object都被25字节的对象申请，此时内存浪费最大，对应浪费率为(32-25)/32=21.875%。</p>
+<p>mspan有如下关键属性：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> mspan <span class="keyword">struct</span> &#123;</span><br><span class="line">   freeindex  <span class="type">uintptr</span>   <span class="comment">//当前空节点索引</span></span><br><span class="line">   allocCache <span class="type">uint64</span>    <span class="comment">//当前64个节点的分配位图，每一个bit表示一个节点，1表示空闲，0表示被分配，起点为freeindex指向节点</span></span><br><span class="line">   allocBits  *gcBits   <span class="comment">//整个mspan分配状态位图，每一个bit表示一个节点，1表示被分配，0表示空闲</span></span><br><span class="line">   gcmarkBits *gcBits   <span class="comment">//整个mspan的gc标记状态位图，每一个bit表示一个节点，1表示黑色，被分配，0表示白色，空闲</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例如在某个时刻，mspan的起始部分使用情况如下图，底色为灰色表示该对象已经被申请，底色为白色则表示该对象处于未被占用状态。</p>
+<p><img src="/assets/images/golearing/image-20220610215205979.png" alt="image-20220610215205979"></p>
+<p>则allocbits二进制值为：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1000110001010101.</span>..</span><br></pre></td></tr></table></figure>
+<p>如上图中每格中的数值，1表示该对象已经被申请，0则表示该对象空闲。</p>
+<p>而allocCache表示以freeindex为起始，最近64个节点（即[freeindex, freeindex+63]节点）的对象申请情况，其每个bit位的值为allocbits值取反。如上图，如果freeindex为0，则allocCache的二进制值为：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0111001110101010100101010110101111010110101101100110001000011101</span></span><br></pre></td></tr></table></figure>
+<p>allocCache用于快速找到最近空闲对象节点。当从mspan中申请一个object时，则通过找到allocCache第一个非零bit位偏移位数，记为bit1，则freeindex+bit1则为最近空闲object节点，如上图如果freeindex为0，则节点1为最近空闲节点。</p>
+<p>gcmarkBits在启动gc的时候会初始化为全0，在GC标记阶段，如果该对象在被设置成1。当GC结束后，allocbits将被赋值成gcmarkBits（刚好1在gcmarkBits表示黑色，对应allocbits被申请状态），作为allocbits的初始值。这里需要注意的是，在申请mspan对象过程中，并不修改allocbits的值。</p>
 <h5 id="arena">arena</h5>
-<p>arena维护内存地址和mspan之间的映射关系，方便在GC的时候，快速找到对象所在的mspan。</p>
-<p><img src="/assets/images/golearing/image-20220529192237465.png" alt="image-20220529192237465"></p>
-<p>arena将进程的整个内存空间（除去非堆空间），按照64M（2的26次方）字节大小划分成若干个arena。在x86-amd64平台下，Golang认为进程最大堆内存空间为256T（2的48次方），每个进程的堆内存空间可以分为256T/64M=4M（2的22次方）个arena对象。每个arena对象记录arena下每个内存页所属的mspan，则arena对象下有64M /8K=8K个mspan对象。</p>
-<p>当申请对象内存时，如果需要新申请mspan，则将mspan的基地址映射到对应的arena，再将该arena下属于该mspan的内存页的归属mspan依次设置成该mspan对象。如果申请的mspan跨越多个arena，则需要对每个arena下属于mspan的内存页的归属mspan依次设置成该mspan对象。</p>
-<p>当释放对象时，则根据对象的地址和所属的内存页，通过arena快速找到该对象所属的mspan，再通过mspan基址和mspan对象大小找到该对象（在垃圾回收章节将详细描述）。</p>
+<p>arena主要用于协助垃圾回收快速查找内存地址指向对象的信息。在x86-amd64平台下，Golang将进程的内存空间（除去非堆空间）按照64M（2的26次方）字节大小划分成若干块。Golang认为进程最大堆内存空间为256T（2的48次方）字节，则整个内存空间可以分为256T/64M=4M（2的22次方）块。每一块内存由一个arena对象维护其相关属性。</p>
+<p><img src="/assets/images/golearing/image-20220612104742490.png" alt="image-20220612104742490"></p>
+<p>arena主要包含如下两个属性：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> heapArena <span class="keyword">struct</span> &#123;</span><br><span class="line">   bitmap [heapArenaBitmapBytes]<span class="type">byte</span> <span class="comment">// arena下内存地址指向对象指针引用位图，</span></span><br><span class="line">   spans [pagesPerArena]*mspan <span class="comment">// arena下内存地址指向对象所属mspan</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<p>bitmap记录整个arena下内存地址指向的对象所包含的对象指针应用关系，大小为64M/(8*8/2)=2M。</p>
+<blockquote>
+<p>一个arena对应的地址为64M，每个指针大小为8字节，bitmap为byte（长度为8）数组，每个字节只有一半用来表示指针，所以bitmap大小为64M/(8*8/2)=2M。</p>
+</blockquote>
+<p>bitmap每个字节分为高低4bit两部分，高4bit的每个bit表示指向的地址其后是否存在指针对象，1表示存在，0表示不存在。低4bit每个bit表示指向的地址是否为指针，1表示指针，0表示非指针（标量）。</p>
+<p><img src="/assets/images/golearing/image-20220612111345101.png" alt="image-20220612111345101"></p>
+<p>spans以内存页为粒度，记录arena下每个内存页所属的mspan。之所以以内存页大小为单元，是因为每个mspan指向的内存大小为内存页的整数倍，所以每个内存页只可能归属于一个mspan。</p>
+<blockquote>
+<p>一个arena对应的地址为64M，一个内存页的大小为8K，所以spans大小为64M/8K=8K。</p>
+</blockquote>
+<p><img src="/assets/images/golearing/image-20220612111858828.png" alt="image-20220612111858828"></p>
+<p>在GC标记过程中，由对象指针，通过arena的bitmap可以快速扫描该对象下指针引用，并通过spans快速找到对象所属mspan，并标记其对应的gcmarkBits（实现过程在垃圾回收章节详细描述）</p>
 
 </div>
 
@@ -244,7 +267,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>Fred</div>
-      <div>2022-05-29</div>
+      <div>2022-06-12</div>
     </div>
   </div>
   
