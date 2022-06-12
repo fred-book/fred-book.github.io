@@ -174,7 +174,7 @@ function sidebar_toggle() {
   <h3 id="内存管理">内存管理</h3>
 <hr>
 <p>Golang提供内存管理功能，开发者不需要关系内存的申请和释放，这样为使用者带来极大的便利。</p>
-<p><img src="C:%5CUsers%5Czgchu%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220529161127319.png" alt="image-20220529161127319"></p>
+<p><img src="/assets/images/golearing/image-20220529161127319.png" alt="image-20220529161127319"></p>
 <p>Golang提供两级内存管理机制，第一级为p级内存管理mcache，第二级为全局内存管理mheap。</p>
 <h4 id="mcache">mcache</h4>
 <p>每个p都有一个独立的mcache，为该p单独提供内存管理。这样就可以降低p间的竞争，提高内存并发申请效率。mcache主要维护2个对象：</p>
