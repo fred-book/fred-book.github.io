@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">Home</a></li>
 <li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
 </ul>
-<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<h1 id="深入浅出Go语言">深入浅出Go语言</h1>
 <ul>
 <li><a href="/golearning/introduction">引言</a></li>
 <li>上篇.深入Go语言
@@ -176,6 +176,8 @@ function sidebar_toggle() {
 <p>Golang提供内存管理功能，开发者不需要关系内存的申请和释放，这样为使用者带来极大的便利。</p>
 <p><img src="/assets/images/golearing/image-20220529161127319.png" alt="image-20220529161127319"></p>
 <p>Golang提供两级内存管理机制，第一级为p级内存管理mcache，第二级为全局内存管理mheap。</p>
+<p>在为对象申请内存时，采用递进式内存申请如下图所示，当某一级对象不够用，则向后一级申请。</p>
+<p><img src="/assets/images/golearing/image-20220612210436224.png" alt="image-20220612210436224"></p>
 <h4 id="mcache">mcache</h4>
 <p>每个p都有一个独立的mcache，为该p单独提供内存管理。这样就可以降低p间的竞争，提高内存并发申请效率。mcache主要维护2个对象：</p>
 <p>tiny：为长度小于16字节且非扫描（不含指针）对象分配内存。tiny本身为16字节长度的内存块，在分配内存时，更新已经分配内存的偏移量。</p>
@@ -267,7 +269,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>Fred</div>
-      <div>2022-06-12</div>
+      <div>2022-06-15</div>
     </div>
   </div>
   

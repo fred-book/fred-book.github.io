@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="/">Home</a></li>
 <li><a target="_blank" rel="noopener" href="https://fred-tt.github.io/">作者主页</a></li>
 </ul>
-<h1 id="深入浅出Go语言-v2">深入浅出Go语言</h1>
+<h1 id="深入浅出Go语言">深入浅出Go语言</h1>
 <ul>
 <li><a href="/golearning/introduction">引言</a></li>
 <li>上篇.深入Go语言
@@ -248,10 +248,18 @@ function sidebar_toggle() {
 <li>如何识别对象中引用的指针对象？</li>
 <li>GC的触发条件是什么？</li>
 </ol>
-<p>在解释上述问题前，希望我们能达成一个共识：GC的对象堆（heap）上申请的内存，堆上内存都由span管理。</p>
+<p>在解释上述问题前，希望我们能达成一个共识：GC的对象是堆（heap）上申请的内存，堆上内存都由span管理。</p>
 <h5 id="GC根对象">GC根对象</h5>
+<p>GC根对象包含栈上（stack）对象，赋初值（data）和未赋初值（bss）全局变量三种。</p>
 <h5 id="引用指针对象">引用指针对象</h5>
+<p>每个对象类型定义中有一个gcdata属性，记录对象的指针引用情况，在申请对象时，会将对象的gcdata信息记录到对象地址对应的arena.bitmap上。当扫描到一个对象地址时，通过arena.bitmap即可获悉该对象内存块中引用的指针信息。</p>
 <h5 id="GC触发条件">GC触发条件</h5>
+<p>GC触发存在以下三种触发条件：</p>
+<ol>
+<li>时间触发GC：默认2分钟执行一次GC</li>
+<li>内存申请触发GC：当申请内存达到前一轮GC后内存的一定比率则触发GC</li>
+<li>外部触发GC：外部要求启动新一轮的GC，已启动则跳过，比如代码中主动调用runtime.GC()触发GC</li>
+</ol>
 
 </div>
 
@@ -291,7 +299,7 @@ function sidebar_toggle() {
     <!-- Author title -->
     <div class="author-title">
       <div>Fred</div>
-      <div>2022-06-06</div>
+      <div>2022-06-15</div>
     </div>
   </div>
   
