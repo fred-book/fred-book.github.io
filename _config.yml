@@ -141,3 +141,7 @@ markdown:
     permalinkClass: header-anchor
     # The symbol used to make the permalink
     permalinkSymbol: '# '
+
+# automatically generate sitemap
+sitemap:
+  path: sitemap.xml

@@ -19,4 +19,15 @@
     * [2.5 循环调度](/golearning/goinside/scheduling/schedule)
     * [2.6 系统监控](/golearning/goinside/scheduling/sysmon)
     * [2.7 小结](/golearning/goinside/scheduling/summary)
-
+  * 第三章 进程启动
+    * [3.1 概述](/golearning/goinside/startup/abstract)
+    * [3.2 进程启动](/golearning/goinside/startup/startup)
+    * [3.3 线程本地存储](/golearning/goinside/startup/tls)
+    * [3.4 入参传递](/golearning/goinside/startup/param)
+    * [3.5 小结](/golearning/goinside/startup/summary)
+  * 第四章 内存管理
+    * [4.1 概述](/golearning/goinside/memory/abstract)
+    * [4.2 内存管理](/golearning/goinside/memory/memory)
+    * [4.3 创建对象](/golearning/goinside/memory/newobject)
+    * [4.4 垃圾回收](/golearning/goinside/memory/gc)
+    * [4.5 小结](/golearning/goinside/memory/summary)
